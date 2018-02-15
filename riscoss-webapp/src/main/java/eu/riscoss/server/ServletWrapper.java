@@ -90,7 +90,7 @@ public class ServletWrapper extends ServletContainer {
 					try {
 						location = DBConnector.findLocation( DBConnector.class );
 						String directory = URLDecoder.decode( location.getAbsolutePath(), "UTF-8" );
-						dbaddr = "plocal:" + directory + "/" + dbname;
+						dbaddr = "plocal:" + directory + "\\" + dbname;
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 						dbaddr = "plocal:" + dbname;
@@ -103,7 +103,7 @@ public class ServletWrapper extends ServletContainer {
 				System.out.println( "Using database " + dbaddr );
 			}
 			else {
-				dbaddr = dbaddr + "/" + dbname;
+				dbaddr = dbaddr + "\\" + dbname;
 			}
 			
 			DBConnector.initDatabase( dbaddr );
