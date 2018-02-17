@@ -18,5 +18,7 @@
     <property name="hbm2ddl.auto">validate</property>
     <!-- MAPPINGS -->
     <mapping class="eu.riscoss.db.postgreSQL.model.DomainEntity"/>
+	<mapping class="eu.riscoss.db.postgreSQL.model.UserEntity"/>
+	<mapping class="eu.riscoss.db.postgreSQL.model.UserRoleEntity"/>
   </session-factory>
 </hibernate-configuration>

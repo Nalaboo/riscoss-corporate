@@ -41,6 +41,6 @@ public class DomainEntity {
     
     @Override
     public String toString() {
-        return String.format("name: %s, role: %s", getDomainName(), getDefaultRole());
+        return "UserRole [domainname=" + domainname + ", defaultrole=" + defaultrole + ", ispublic=" + ispublic + "]";
     }
 }
