@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%@page import="eu.riscoss.db.RiscossDatabase"%>
+<%@page import="eu.riscoss.db.RiscossDBDomain"%>
 <%@page import="eu.riscoss.server.DBConnector"%>
 
-<%@ page import="eu.riscoss.db.RiscossDatabase"%>
+<%@ page import="eu.riscoss.db.RiscossDBDomain"%>
 <%@ page import="eu.riscoss.shared.CookieNames"%>
 
 <%@ page import="javax.script.Invocable"%>
@@ -27,9 +27,9 @@ if (cookies != null) {
 }
 	
 	if( token != null ) {
-		RiscossDatabase db = null;
+		RiscossDBDomain db = null;
 		try {
-			db = DBConnector.openDatabase( token );
+			db = DBConnector.openORiscossDBDomain(token);
 			%><jsp:include page="home.jsp" flush="true"/><%
 			return;
 		}
@@ -42,7 +42,7 @@ if (cookies != null) {
 			response.addCookie(cookie);
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDBDomain(db);
 		}
 	}
 		

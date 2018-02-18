@@ -29,10 +29,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.codec.binary.Base64;
 
-import eu.riscoss.db.ORiscossDatabase;
-import eu.riscoss.db.ORiscossDomain;
+import eu.riscoss.db.ORiscossDBDomain;
+import eu.riscoss.db.ORiscossDB;
 import eu.riscoss.db.RiscossDB;
-import eu.riscoss.db.RiscossDatabase;
+import eu.riscoss.db.RiscossDBDomain;
 
 public class DBConnector {
 	
@@ -91,10 +91,10 @@ public class DBConnector {
 	 * @param password
 	 * @return
 	 */
-	public static RiscossDatabase openDatabase( String username, String password ) throws Exception {
+	public static RiscossDBDomain openORiscossDBDomain( String username, String password ) throws Exception {
 		lock( "" );
 		try {
-			return new ORiscossDatabase( db_addr, username, password );
+			return new ORiscossDBDomain( db_addr, username, password );
 		}
 		catch( Exception ex ) {
 			unlock( "" );
@@ -106,10 +106,10 @@ public class DBConnector {
 	 * @param token
 	 * @return
 	 */
-	public static RiscossDatabase openDatabase( String token ) throws Exception {
+	public static RiscossDBDomain openORiscossDBDomain( String token ) throws Exception {
 		lock( "" );
 		try {
-			return new ORiscossDatabase( db_addr, Base64.decodeBase64( token ) );
+			return new ORiscossDBDomain( db_addr, Base64.decodeBase64( token ) );
 		}
 		catch( Exception ex ) {
 			unlock( "" );
@@ -125,10 +125,10 @@ public class DBConnector {
 	 * @param password
 	 * @return
 	 */
-	public static RiscossDB openDB( String domain, String username, String password ) throws Exception {
+	public static RiscossDB openORiscossDB( String domain, String username, String password ) throws Exception {
 		try {
 			lock( domain );
-			return new ORiscossDomain( db_addr, URLEncoder.encode( domain, "UTF-8" ), username, password );
+			return new ORiscossDB( db_addr, URLEncoder.encode( domain, "UTF-8" ), username, password );
 		}
 		catch( Exception e ) {
 			unlock( domain );
@@ -141,10 +141,10 @@ public class DBConnector {
 	 * @param token
 	 * @return
 	 */
-	public static RiscossDB openDB( String domain, String token ) throws Exception {
+	public static RiscossDB openORiscossDB( String domain, String token ) throws Exception {
 		try {
 			lock( domain );
-			return new ORiscossDomain( db_addr, URLEncoder.encode( domain, "UTF-8" ), Base64.decodeBase64( token ) );
+			return new ORiscossDB( db_addr, URLEncoder.encode( domain, "UTF-8" ), Base64.decodeBase64( token ) );
 		}
 		catch( Exception e ) {
 			unlock( domain );
@@ -156,7 +156,7 @@ public class DBConnector {
 		db_addr = dbaddr;
 	}
 	
-	public static void closeDB( RiscossDB db ) {
+	public static void closeRiscossDB( RiscossDB db ) {
 		if( db == null ) return;
 		try {
 			db.close();
@@ -169,7 +169,7 @@ public class DBConnector {
 		}
 	}
 
-	public static void closeDB( RiscossDatabase db ) {
+	public static void closeRiscossDBDomain( RiscossDBDomain db ) {
 		if( db == null ) return;
 		try {
 			db.close();

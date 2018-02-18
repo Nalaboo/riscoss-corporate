@@ -50,7 +50,7 @@ public class RDRManager {
 		JsonArray json = (JsonArray)new JsonParser().parse( riskData );
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			for( int i = 0; i < json.size(); i++ ) {
 				JsonObject o = json.get( i ).getAsJsonObject();
 				try {
@@ -64,7 +64,7 @@ public class RDRManager {
 			throw e1;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	

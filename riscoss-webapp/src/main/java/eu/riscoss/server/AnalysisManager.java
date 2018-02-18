@@ -165,7 +165,7 @@ public class AnalysisManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			JsonObject json = new JsonObject();
 			JsonArray array = new JsonArray();
@@ -180,7 +180,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 	}
@@ -213,7 +213,7 @@ public class AnalysisManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			SearchParams params = new SearchParams();
 			params.setMax( strMax );
@@ -243,7 +243,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB(db);
+			DBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -258,7 +258,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB(domain, token);
+			db = DBConnector.openORiscossDB(domain, token);
 			
 			JsonArray a = new JsonArray();
 			JsonObject list = (JsonObject) new JsonParser().parse(rasIds);
@@ -284,7 +284,7 @@ public class AnalysisManager {
 		} catch (Exception ex) {
 			throw ex;
 		} finally {
-			DBConnector.closeDB(db);
+			DBConnector.closeRiscossDB(db);
 		}
 		
 	}
@@ -299,7 +299,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			JsonArray a = new JsonArray();
 			HashMap<String, RiskAnalysisSession> raslist = new HashMap<>();
@@ -342,7 +342,7 @@ public class AnalysisManager {
 		} catch ( Exception ex ) {
 			throw ex;
 		} finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 	}
@@ -359,7 +359,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS( sid );
 
@@ -370,7 +370,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -390,7 +390,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			// Create a new risk analysis session
 			RiskAnalysisSession ras = db.createRAS();
@@ -443,7 +443,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -460,7 +460,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS( sid );
 			
@@ -470,7 +470,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -491,7 +491,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS( sid );
 			
@@ -503,7 +503,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -546,7 +546,7 @@ public class AnalysisManager {
 		RiscossDB db = null;
 		
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			// Sia i dati che mancano, sia quelli marcati come "user"
 			RiskAnalysisSession ras = db.openRAS( sid );
@@ -562,7 +562,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -577,7 +577,7 @@ public class AnalysisManager {
 		JsonObject json = (JsonObject) new JsonParser().parse(values);
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			JValueMap valueMap = gson.fromJson(json, JValueMap.class);
 			RiskAnalysisSession ras = db.openRAS(sid);
 			for (String entity : valueMap.map.keySet()) {
@@ -591,7 +591,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB(db);
+			DBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -610,7 +610,7 @@ public class AnalysisManager {
 			for (int i = 0; i < jentities.size(); ++i) {
 				list.add(jentities.get(i).getAsString());
 			}
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			JWhatIfData data = new JWhatIfData();
 			RiskAnalysisSession ras = db.openRAS( sid );
 			for( String entity : list ) {
@@ -635,7 +635,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -650,7 +650,7 @@ public class AnalysisManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			RiskAnalysisSession ras = db.openRAS( sid );
 			JsonObject json = new JsonObject();
 			json.addProperty( "id", ras.getId() );
@@ -669,7 +669,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -683,7 +683,7 @@ public class AnalysisManager {
 		RiscossDB db = null;
 		
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS(sid);
 			List<String> modelsList = db.getModelsFromRiskCfg( ras.getRCName(), ras.getTarget() );
@@ -699,7 +699,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1044,7 +1044,7 @@ public class AnalysisManager {
 		RiscossDB db = null;
 		
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			RiskAnalysisSession ras = db.openRAS(sid);
 			List<String> modelsList = db.getModelsFromRiskCfg( ras.getRCName(), ras.getTarget() );
 			
@@ -1087,7 +1087,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1101,7 +1101,7 @@ public class AnalysisManager {
 		RiscossDB db = null;
 		
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS(sid);
 			List<String> modelsList = db.getModelsFromRiskCfg( ras.getRCName(), ras.getTarget() );
@@ -1137,7 +1137,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1151,7 +1151,7 @@ public class AnalysisManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			RiskAnalysisSession ras = db.openRAS( sid );
 			return ras.readResults();
 		}
@@ -1159,7 +1159,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1172,14 +1172,14 @@ public class AnalysisManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			db.destroyRAS( sid );
 		}
 		catch( Exception ex ) {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1200,7 +1200,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			// Create a new risk analysis session
 			RiskAnalysisSession ras = db.openRAS( sid );
@@ -1229,7 +1229,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1493,7 +1493,7 @@ public class AnalysisManager {
 		
 		RiskAnalysisEngine rae = ReasoningLibrary.get().createRiskAnalysisEngine();
 		
-		RiscossDB db = DBConnector.openDB( domain, token );
+		RiscossDB db = DBConnector.openORiscossDB( domain, token );
 		
 		try {
 			
@@ -1637,7 +1637,7 @@ public class AnalysisManager {
 			return jsonString;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 	}
@@ -1667,7 +1667,7 @@ public class AnalysisManager {
 		
 		RiskAnalysisEngine rae = ReasoningLibrary.get().createRiskAnalysisEngine();
 		
-		RiscossDB db = DBConnector.openDB( domain, token );
+		RiscossDB db = DBConnector.openORiscossDB( domain, token );
 		
 		try {
 			for( int i = 0; i < jmodels.size(); i++ ) {
@@ -1710,7 +1710,7 @@ public class AnalysisManager {
 			}
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 		rae.runAnalysis( new String[] {} );
@@ -1796,7 +1796,7 @@ public class AnalysisManager {
 		RiscossDB db = null;
 		
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS( sid );
 			
@@ -1806,7 +1806,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 		return "";
@@ -1825,7 +1825,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS( sid );
 			
@@ -1840,7 +1840,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1857,7 +1857,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS( sid );
 			
@@ -1872,7 +1872,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1889,7 +1889,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS( sid );
 			
@@ -1904,7 +1904,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -1926,7 +1926,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 		return "";
@@ -1948,7 +1948,7 @@ public class AnalysisManager {
 		
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisSession ras = db.openRAS( sid );
 			
@@ -1980,7 +1980,7 @@ public class AnalysisManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	

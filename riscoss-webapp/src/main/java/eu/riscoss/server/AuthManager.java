@@ -19,7 +19,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientBaseGraph;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
-import eu.riscoss.db.RiscossDatabase;
+import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.shared.KnownRoles;
 
 @Path("auth")
@@ -71,15 +71,15 @@ public class AuthManager {
 			@HeaderParam("token") @Info("The authentication token") 			String token
 			) throws Exception {
 		
-		RiscossDatabase db = null;
+		RiscossDBDomain db = null;
 		try {
-			db = DBConnector.openDatabase( token );
+			db = DBConnector.openORiscossDBDomain( token );
 		}
 		catch( Exception ex ) {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDBDomain( db );
 		}
 		return new JsonPrimitive( "Ok" ).toString();
 	}
@@ -132,11 +132,11 @@ public class AuthManager {
 	public String getUsername( 
 			@HeaderParam("token") @Info("The authentication token")			String token ) {
 		
-		RiscossDatabase database = null;
+		RiscossDBDomain database = null;
 		
 		try {
 			
-			database = DBConnector.openDatabase( token );
+			database = DBConnector.openORiscossDBDomain( token );
 			
 			String username = database.getUsername();
 			
@@ -146,7 +146,7 @@ public class AuthManager {
 			return new JsonPrimitive( "Error" ).toString();
 		}
 		finally {
-			DBConnector.closeDB( database );
+			DBConnector.closeRiscossDBDomain( database );
 		}
 		
 	}

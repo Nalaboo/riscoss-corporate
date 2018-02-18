@@ -26,6 +26,12 @@
 		<param-value>40000000</param-value>
 	</context-param>
 	
+		<!-- customize the DB-PostgreSQL location -->
+		
+		
+		
+		
+	
 <!-- 	<context-param> -->
 <!-- 		<param-name>eu.riscoss.db.address</param-name> -->
 <!-- 		<param-value>remote:localhost</param-value> -->

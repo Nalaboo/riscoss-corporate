@@ -23,7 +23,7 @@ import eu.riscoss.db.domdb.GDomContainer;
  * Use RiscossDB for all accesses to the database content (except users and domain) with a defined domain and user credentials
  *
  */
-public class ORiscossDatabase implements RiscossDatabase {
+public class ORiscossDBDomain implements RiscossDBDomain {
 	
 	private static final OServerParameterConfiguration[] I_PARAMS = new OServerParameterConfiguration[] { 
 		new OServerParameterConfiguration( OrientTokenHandler.SIGN_KEY_PAR, "any key"),
@@ -62,7 +62,7 @@ public class ORiscossDatabase implements RiscossDatabase {
 	
 	private String username;
 	
-	public ORiscossDatabase( String addr, String username, String password) {
+	public ORiscossDBDomain( String addr, String username, String password) {
 		
 		OrientBaseGraph graph = null;
 		
@@ -79,9 +79,9 @@ public class ORiscossDatabase implements RiscossDatabase {
 		
 	}
 	
-	public ORiscossDatabase( String addr, byte[] tokenBytes ) {
+	public ORiscossDBDomain( String addr, byte[] tokenBytes ) {
 		
-		OrientTokenHandler handler = ORiscossDatabase.createTokenHandler();
+		OrientTokenHandler handler = ORiscossDBDomain.createTokenHandler();
 		
 		OToken tok = handler.parseWebToken( tokenBytes );
 		handler.validateBinaryToken( tok );

@@ -22,7 +22,7 @@ public class DownloadServlet extends HttpServlet {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			String name = request.getParameter("name");
 			String type = request.getParameter("type");
@@ -65,7 +65,7 @@ public class DownloadServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	

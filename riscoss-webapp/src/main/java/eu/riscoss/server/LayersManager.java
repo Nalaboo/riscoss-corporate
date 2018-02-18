@@ -66,7 +66,7 @@ public class LayersManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			for( String layer : db.layerNames() ) {
 				JsonObject o = new JsonObject();
@@ -78,7 +78,7 @@ public class LayersManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 		return a.toString();
@@ -109,7 +109,7 @@ public class LayersManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			
 			SearchParams params = new SearchParams();
 			params.setMax( strMax );
@@ -129,7 +129,7 @@ public class LayersManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB(db);
+			DBConnector.closeRiscossDB(db);
 		}
 		return new Gson().toJson( result );
 	}
@@ -176,14 +176,14 @@ public class LayersManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			db.addLayer( name, parentName );
 		}
 		catch( Exception ex ) {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -198,14 +198,14 @@ public class LayersManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token);
+			db = DBConnector.openORiscossDB( domain, token);
 			
 			db.editParent(name, parent);
 			
 		} catch (Exception ex) {
 			throw ex;
 		} finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -219,7 +219,7 @@ public class LayersManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			if( db.entities( name ).size() > 0 ) {
 				throw new Exception( "You can not delete a layer that still contains entities. You must delete all the entities befor being able to delete this layer." );
 			}
@@ -229,7 +229,7 @@ public class LayersManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 	}
@@ -244,7 +244,7 @@ public class LayersManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			String json = db.getLayerData( layer, "ci" );
 			if( json == null ) {
 				JLayerContextualInfo info = new JLayerContextualInfo();
@@ -256,7 +256,7 @@ public class LayersManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 	}
@@ -272,14 +272,14 @@ public class LayersManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			db.setLayerData( layer, "ci", json );
 		}
 		catch( Exception ex ) {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 		
 	}
@@ -295,14 +295,14 @@ public class LayersManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			db.renameLayer( name, newName );
 		}
 		catch( Exception ex ) {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -316,7 +316,7 @@ public class LayersManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB( domain, token );
+			db = DBConnector.openORiscossDB( domain, token );
 			List<String> scope = db.getScope( layer );
 			return gson.toJson( scope );
 		}
@@ -324,7 +324,7 @@ public class LayersManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -336,12 +336,12 @@ public class LayersManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB(domain, token);
+			db = DBConnector.openORiscossDB(domain, token);
 			return db.getProperty( RiscossElements.LAYER, entity, "description", "" );
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeDB(db);
+			DBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -354,12 +354,12 @@ public class LayersManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openDB(domain, token);
+			db = DBConnector.openORiscossDB(domain, token);
 			db.setProperty( RiscossElements.LAYER, layer, "description", description );
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeDB(db);
+			DBConnector.closeRiscossDB(db);
 		}
 	}
 	

@@ -37,7 +37,7 @@ import org.reflections.Reflections;
 
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossDBResource;
-import eu.riscoss.db.RiscossDatabase;
+import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.db.SiteManager;
 import eu.riscoss.ram.RiskAnalysisManager;
 import eu.riscoss.rdc.RDC;
@@ -59,7 +59,7 @@ public class ServletWrapper extends ServletContainer {
 		
 		super.init();
 		
-		RiscossDatabase db = null;
+		RiscossDBDomain db = null;
 		
 		try {
 			
@@ -113,7 +113,7 @@ public class ServletWrapper extends ServletContainer {
 			
 			String initString = sc.getInitParameter( "eu.riscoss.param.domains.list" );
 			
-			db = DBConnector.openDatabase( superadmin, superpwd );
+			db = DBConnector.openORiscossDBDomain( superadmin, superpwd );
 			
 			db.init();
 			
@@ -179,7 +179,7 @@ public class ServletWrapper extends ServletContainer {
 				for( String tok : tokens ) {
 					RiscossDB domainDB = null;
 					try {
-						domainDB = DBConnector.openDB( tok, superadmin, superpwd );
+						domainDB = DBConnector.openORiscossDB( tok, superadmin, superpwd );
 						for( KnownRoles r : KnownRoles.values() ) {
 							domainDB.createRole( r.name() );
 							for( Pair<DBResource,String> perm : r.permissions() ) {
@@ -190,7 +190,7 @@ public class ServletWrapper extends ServletContainer {
 					}
 					catch( Exception ex ) {}
 					finally {
-						DBConnector.closeDB( domainDB );
+						DBConnector.closeRiscossDB( domainDB );
 					}
 				}
 			}
@@ -198,7 +198,7 @@ public class ServletWrapper extends ServletContainer {
 			e.printStackTrace();
 		}
 		finally {
-			DBConnector.closeDB( db );
+			DBConnector.closeRiscossDBDomain( db );
 		}
 		
 		Reflections reflections = new Reflections( RDCRunner.class.getPackage().getName() );

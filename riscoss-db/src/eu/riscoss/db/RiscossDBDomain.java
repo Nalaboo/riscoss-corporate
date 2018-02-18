@@ -2,7 +2,7 @@ package eu.riscoss.db;
 
 import java.util.List;
 
-public interface RiscossDatabase {
+public interface RiscossDBDomain {
 	
 	public void init();
 	

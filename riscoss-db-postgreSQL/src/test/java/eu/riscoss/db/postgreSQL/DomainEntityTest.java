@@ -1,6 +1,5 @@
 package eu.riscoss.db.postgreSQL;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import eu.riscoss.db.postgreSQL.model.DomainEntity;
 import junit.framework.TestCase;
@@ -15,7 +14,7 @@ public class DomainEntityTest extends TestCase{
 	
 	public static void testApp() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
+        session.beginTransaction();
 		 
 		DomainEntity domain = new DomainEntity();
 		domain.setDomainName("Domain1");

@@ -41,17 +41,17 @@ import eu.riscoss.db.domdb.NameAttributeProvider;
 import eu.riscoss.db.domdb.NodeID;
 import eu.riscoss.db.domdb.OLinkedList;
 
-public class ORiscossDomain implements RiscossDB {
+public class ORiscossDB implements RiscossDB {
 	
 	GDomDB		dom = null;
 	
-	ORiscossDomain( OrientBaseGraph graph, String domain ) {
+	ORiscossDB( OrientBaseGraph graph, String domain ) {
 		
 		dom = new GDomDB( graph, domain );
 		
 	}
 	
-	public ORiscossDomain( String address, String domain ) {
+	public ORiscossDB( String address, String domain ) {
 		
 		OrientGraphNoTx graph = new OrientGraphFactory( address ).getNoTx();
 		
@@ -59,7 +59,7 @@ public class ORiscossDomain implements RiscossDB {
 		
 	}
 	
-	public ORiscossDomain( String address, String domain, String username, String password ) {
+	public ORiscossDB( String address, String domain, String username, String password ) {
 		
 		OrientGraphNoTx graph = new OrientGraphFactory( address, username, password ).getNoTx();
 		
@@ -67,9 +67,9 @@ public class ORiscossDomain implements RiscossDB {
 		
 	}
 	
-	public ORiscossDomain( String address, String domain, byte[] token ) {
+	public ORiscossDB( String address, String domain, byte[] token ) {
 		
-		OrientTokenHandler handler = ORiscossDatabase.createTokenHandler();
+		OrientTokenHandler handler = ORiscossDBDomain.createTokenHandler();
 		
 		OToken tok = handler.parseWebToken(token);
 		handler.validateBinaryToken( tok );
