@@ -58,6 +58,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import eu.riscoss.dataproviders.RiskData;
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RecordAbstraction;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossElements;

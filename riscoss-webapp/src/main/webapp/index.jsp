@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@page import="eu.riscoss.db.RiscossDBDomain"%>
-<%@page import="eu.riscoss.server.DBConnector"%>
+<%@page import="eu.riscoss.db.DBConnector"%>
 
 <%@ page import="eu.riscoss.db.RiscossDBDomain"%>
 <%@ page import="eu.riscoss.shared.CookieNames"%>

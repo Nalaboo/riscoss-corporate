@@ -42,6 +42,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossElements;
 import eu.riscoss.db.SearchParams;
@@ -61,7 +62,6 @@ import eu.riscoss.shared.EChunkType;
 import eu.riscoss.shared.JChunkItem;
 import eu.riscoss.shared.JChunkList;
 import eu.riscoss.shared.JChunkValue;
-import eu.riscoss.shared.JLayerNode;
 import eu.riscoss.shared.JModelNode;
 import eu.riscoss.shared.JProposition;
 import eu.riscoss.shared.JRelation;

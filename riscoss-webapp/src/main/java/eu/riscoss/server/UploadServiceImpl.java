@@ -21,22 +21,19 @@
 
 package eu.riscoss.server;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.shared.RiscossUtil;
 import gwtupload.server.UploadAction;
 import gwtupload.server.exceptions.UploadActionException;
 import gwtupload.shared.UConsts;
-
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.StringReader;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

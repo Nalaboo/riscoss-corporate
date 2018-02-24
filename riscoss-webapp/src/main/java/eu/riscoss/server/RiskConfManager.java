@@ -42,10 +42,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossElements;
 import eu.riscoss.db.SearchParams;
-import eu.riscoss.shared.JModelNode;
 import eu.riscoss.shared.JRCNode;
 import eu.riscoss.shared.JRiskConfiguration;
 import eu.riscoss.shared.JRiskConfigurationLayerInfo;

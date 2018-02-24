@@ -19,6 +19,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientBaseGraph;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.shared.KnownRoles;
 

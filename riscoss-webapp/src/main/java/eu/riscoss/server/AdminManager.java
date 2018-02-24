@@ -21,6 +21,7 @@ import com.orientechnologies.orient.core.metadata.security.OSecurity;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossDBResource;
 import eu.riscoss.db.RiscossDBDomain;

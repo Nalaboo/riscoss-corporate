@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDB;
 
 public class DownloadServlet extends HttpServlet {

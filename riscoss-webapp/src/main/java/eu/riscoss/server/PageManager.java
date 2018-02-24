@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.db.SiteManager;
 import eu.riscoss.shared.CookieNames;

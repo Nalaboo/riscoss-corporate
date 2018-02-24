@@ -38,10 +38,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossElements;
 import eu.riscoss.db.SearchParams;
-import eu.riscoss.shared.JEntityNode;
 import eu.riscoss.shared.JLayerContextualInfo;
 import eu.riscoss.shared.JLayerNode;
 import eu.riscoss.shared.RiscossUtil;

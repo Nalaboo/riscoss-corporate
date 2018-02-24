@@ -35,6 +35,7 @@ import javax.servlet.ServletResponse;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.reflections.Reflections;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossDBResource;
 import eu.riscoss.db.RiscossDBDomain;

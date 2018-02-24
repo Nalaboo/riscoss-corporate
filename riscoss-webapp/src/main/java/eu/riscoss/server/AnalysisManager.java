@@ -21,13 +21,10 @@
 
 package eu.riscoss.server;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -40,7 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Scanner;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
@@ -96,6 +92,7 @@ import com.google.gson.JsonPrimitive;
 
 import eu.riscoss.dataproviders.RiskData;
 import eu.riscoss.dataproviders.RiskDataType;
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RecordAbstraction;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiskAnalysisSession;

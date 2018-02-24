@@ -31,6 +31,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import eu.riscoss.db.DBConnector;
 import eu.riscoss.db.RiscossDB;
 
 @Path("rdr")

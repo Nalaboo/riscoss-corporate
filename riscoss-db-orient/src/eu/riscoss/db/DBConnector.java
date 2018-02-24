@@ -19,7 +19,7 @@
  * @author 	Alberto Siena
 **/
 
-package eu.riscoss.server;
+package eu.riscoss.db;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -36,7 +36,7 @@ import eu.riscoss.db.RiscossDBDomain;
 
 public class DBConnector {
 	
-	static String db_addr = null;
+	public static String db_addr = null;
 	
 //	private static ReentrantLock lock = new ReentrantLock();
 	
