@@ -35,7 +35,7 @@ import javax.servlet.ServletResponse;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.reflections.Reflections;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossDBResource;
 import eu.riscoss.db.RiscossDBDomain;
@@ -89,7 +89,7 @@ public class ServletWrapper extends ServletContainer {
 				}
 				else {
 					try {
-						location = DBConnector.findLocation( DBConnector.class );
+						location = ODBConnector.findLocation( ODBConnector.class );
 						String directory = URLDecoder.decode( location.getAbsolutePath(), "UTF-8" );
 						dbaddr = "plocal:" + directory + "\\" + dbname;
 					} catch (UnsupportedEncodingException e) {
@@ -107,14 +107,14 @@ public class ServletWrapper extends ServletContainer {
 				dbaddr = dbaddr + "\\" + dbname;
 			}
 			
-			DBConnector.initDatabase( dbaddr );
+			ODBConnector.initDatabase( dbaddr );
 			
 			System.out.println( "DB address: " + dbaddr );
 			System.out.println( "DB name: " + dbname );
 			
 			String initString = sc.getInitParameter( "eu.riscoss.param.domains.list" );
 			
-			db = DBConnector.openORiscossDBDomain( superadmin, superpwd );
+			db = ODBConnector.openORiscossDBDomain( superadmin, superpwd );
 			
 			db.init();
 			
@@ -180,7 +180,7 @@ public class ServletWrapper extends ServletContainer {
 				for( String tok : tokens ) {
 					RiscossDB domainDB = null;
 					try {
-						domainDB = DBConnector.openORiscossDB( tok, superadmin, superpwd );
+						domainDB = ODBConnector.openORiscossDB( tok, superadmin, superpwd );
 						for( KnownRoles r : KnownRoles.values() ) {
 							domainDB.createRole( r.name() );
 							for( Pair<DBResource,String> perm : r.permissions() ) {
@@ -191,7 +191,7 @@ public class ServletWrapper extends ServletContainer {
 					}
 					catch( Exception ex ) {}
 					finally {
-						DBConnector.closeRiscossDB( domainDB );
+						ODBConnector.closeRiscossDB( domainDB );
 					}
 				}
 			}
@@ -199,7 +199,7 @@ public class ServletWrapper extends ServletContainer {
 			e.printStackTrace();
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 		
 		Reflections reflections = new Reflections( RDCRunner.class.getPackage().getName() );

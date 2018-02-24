@@ -42,7 +42,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossElements;
 import eu.riscoss.db.SearchParams;
@@ -87,7 +87,7 @@ public class ModelManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			for( String model : db.getModelList() ) {
 				JsonObject o = new JsonObject();
 				o.addProperty( "name", model );
@@ -98,7 +98,7 @@ public class ModelManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 		
 		return a.toString();
@@ -130,7 +130,7 @@ public class ModelManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			SearchParams params = new SearchParams();
 			params.setMax( strMax );
@@ -150,7 +150,7 @@ public class ModelManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 		return new Gson().toJson( result );
 	}
@@ -181,7 +181,7 @@ public class ModelManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			for( int i = 0; i < json.size(); i++ ) {
 				
@@ -351,7 +351,7 @@ public class ModelManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 		
 		String ret = gson.toJson( list );
@@ -391,7 +391,7 @@ public class ModelManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			RiskAnalysisEngine rae = ReasoningLibrary.get().createRiskAnalysisEngine();
 			
@@ -513,7 +513,7 @@ public class ModelManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 		
 		System.out.println( ret.toString() );
@@ -555,14 +555,14 @@ public class ModelManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			
 			db.deleteModelDesc(name);
 			
 		} catch(Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -578,7 +578,7 @@ public class ModelManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			String filename = db.getModelFilename( name );  //modelfilename
 			String descfile = db.getModelDescFielname(name);
@@ -593,7 +593,7 @@ public class ModelManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -609,7 +609,7 @@ public class ModelManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			String blob = db.getModelBlob( name );
 			JsonObject o = new JsonObject();
@@ -621,7 +621,7 @@ public class ModelManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -635,7 +635,7 @@ public class ModelManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			db.removeModel( name );
 		} 
@@ -643,7 +643,7 @@ public class ModelManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -659,7 +659,7 @@ public class ModelManager {
 		RiscossDB db = null;
 		
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			//attention:filename sanitation is not directly notified to the user
 			modelname = RiscossUtil.sanitize(modelname);
@@ -675,7 +675,7 @@ public class ModelManager {
 			throw new UploadActionException(e);
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 		
 	}
@@ -696,7 +696,7 @@ public class ModelManager {
 		//String response = "";
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			for (String storedmodel : db.getModelList()) {
 				if (storedmodel.equals(newName)) {
@@ -712,7 +712,7 @@ public class ModelManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -727,7 +727,7 @@ public class ModelManager {
 		RiscossDB db = null;
 		
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			String blob = db.getModelBlob( name );
 			
@@ -767,7 +767,7 @@ public class ModelManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -779,12 +779,12 @@ public class ModelManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			return db.getProperty( RiscossElements.MODEL, model, "description", "" );
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -797,12 +797,12 @@ public class ModelManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			db.setProperty( RiscossElements.MODEL, model, "description", description );
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	

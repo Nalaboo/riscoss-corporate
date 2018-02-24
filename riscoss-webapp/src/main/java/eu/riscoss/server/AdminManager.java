@@ -21,7 +21,7 @@ import com.orientechnologies.orient.core.metadata.security.OSecurity;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossDBResource;
 import eu.riscoss.db.RiscossDBDomain;
@@ -54,7 +54,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDBDomain( token );
+			db = ODBConnector.openORiscossDBDomain( token );
 			
 			JSiteMap sitemap = new JSiteMap();
 			
@@ -72,7 +72,7 @@ public class AdminManager {
 		finally {
 			
 			if( db != null )
-				DBConnector.closeRiscossDBDomain( db );
+				ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
 	
@@ -109,7 +109,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDBDomain( null, null );
+			db = ODBConnector.openORiscossDBDomain( null, null );
 			JsonArray array = new JsonArray();
 			for( String roleName : db.listRoles() ) {
 				if( roleName != null )
@@ -121,7 +121,7 @@ public class AdminManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
 	
@@ -135,23 +135,23 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDBDomain( token );
+			db = ODBConnector.openORiscossDBDomain( token );
 			db.createDomain( name );
-			RiscossDB domainDB = DBConnector.openORiscossDB( name, token );
+			RiscossDB domainDB = ODBConnector.openORiscossDB( name, token );
 			for( KnownRoles r : KnownRoles.values() ) {
 				domainDB.createRole( r.name() );
 				for( Pair<DBResource,String> perm : r.permissions() ) {
 					domainDB.addPermissions( r.name(), RiscossDBResource.valueOf( perm.getLeft().name() ), perm.getRight() );
 				}
 			}
-			DBConnector.closeRiscossDB( domainDB );
+			ODBConnector.closeRiscossDB( domainDB );
 			return new JsonPrimitive( name ).toString();
 		}
 		catch( Exception ex ) {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
 	
@@ -165,7 +165,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDBDomain( token );
+			db = ODBConnector.openORiscossDBDomain( token );
 			db.deleteDomain( domain );
 			
 		}
@@ -173,7 +173,7 @@ public class AdminManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
 	
@@ -189,7 +189,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( token, domain );
+			db = ODBConnector.openORiscossDB( token, domain );
 			
 			db.createRole( name );
 			
@@ -202,7 +202,7 @@ public class AdminManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -216,7 +216,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( token, domain );
+			db = ODBConnector.openORiscossDB( token, domain );
 			
 			JsonArray array = new JsonArray();
 			
@@ -233,7 +233,7 @@ public class AdminManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -249,7 +249,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDBDomain( token );
+			db = ODBConnector.openORiscossDBDomain( token );
 			
 			JsonArray array = new JsonArray();
 			
@@ -268,7 +268,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
 	
@@ -288,7 +288,7 @@ public class AdminManager {
 			@PathParam("user") @Info("Name of the user dto be deleted") String username
 			) {
 		
-		OrientGraphNoTx graph = new OrientGraphFactory( DBConnector.db_addr ).getNoTx();
+		OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr ).getNoTx();
 		
 		try {
 			
@@ -316,7 +316,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			db.setUserRole( user, role );
 			
@@ -326,7 +326,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -340,7 +340,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			JsonArray array = new JsonArray();
 			for( String user : db.listUsers() ) {
 				JUserInfo info = new JUserInfo( user );
@@ -353,7 +353,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -367,7 +367,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDBDomain( token );
+			db = ODBConnector.openORiscossDBDomain( token );
 			
 			JDomainInfo dinfo = new JDomainInfo();
 			
@@ -380,7 +380,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 		
 	}
@@ -418,7 +418,7 @@ public class AdminManager {
 			RiscossDBDomain db = null;
 			
 			try {
-				db = DBConnector.openORiscossDBDomain(null,null);
+				db = ODBConnector.openORiscossDBDomain(null,null);
 				for (String domain : db.listDomains()) {
 					if (domain != null)
 						set.add(domain);
@@ -426,7 +426,7 @@ public class AdminManager {
 			} catch (Exception e) {
 				throw e;
 			} finally {
-				DBConnector.closeRiscossDBDomain(db);
+				ODBConnector.closeRiscossDBDomain(db);
 			}
 		}
 		return set;
@@ -439,7 +439,7 @@ public class AdminManager {
 			RiscossDBDomain db = null;
 			
 			try {
-				db = DBConnector.openORiscossDBDomain( null, null );
+				db = ODBConnector.openORiscossDBDomain( null, null );
 				
 				if( username == null ) username = db.getUsername();
 				
@@ -451,14 +451,14 @@ public class AdminManager {
 				throw e;
 			}
 			finally {
-				DBConnector.closeRiscossDBDomain( db );
+				ODBConnector.closeRiscossDBDomain( db );
 			}
 		}
 		
 		if( token.length() > 1 ) {
 			RiscossDBDomain db = null;
 			if( !"".equals( username ) ) try {
-				db = DBConnector.openORiscossDBDomain( token );
+				db = ODBConnector.openORiscossDBDomain( token );
 				
 				if( db.getUsername().equals( username ) ) {
 					for( String domain : db.listDomains( username ) ) {
@@ -470,7 +470,7 @@ public class AdminManager {
 				throw e;
 			}
 			finally {
-				DBConnector.closeRiscossDBDomain( db );
+				ODBConnector.closeRiscossDBDomain( db );
 			}
 		}
 		
@@ -489,7 +489,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDBDomain( token );
+			db = ODBConnector.openORiscossDBDomain( token );
 			
 			db.setPredefinedRole( domain, value );
 			
@@ -497,7 +497,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
 	
@@ -513,7 +513,7 @@ public class AdminManager {
 		
 		try {
 			
-			domaindb = DBConnector.openORiscossDB( domain, token );
+			domaindb = ODBConnector.openORiscossDB( domain, token );
 			
 			domaindb.removeUserFromDomain(user);
 		}
@@ -521,7 +521,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( domaindb );
+			ODBConnector.closeRiscossDB( domaindb );
 		}
 	}
 	
@@ -538,7 +538,7 @@ public class AdminManager {
 		
 		try {
 			
-			domaindb = DBConnector.openORiscossDB( domain, token );
+			domaindb = ODBConnector.openORiscossDB( domain, token );
 			
 			domaindb.setUserRole( user, role );
 		}
@@ -546,7 +546,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( domaindb );
+			ODBConnector.closeRiscossDB( domaindb );
 		}
 	}
 	
@@ -562,7 +562,7 @@ public class AdminManager {
 		
 		try {
 			
-			domaindb = DBConnector.openORiscossDB( domain, token );
+			domaindb = ODBConnector.openORiscossDB( domain, token );
 		
 			return gson.toJson(domaindb.getRole(user));
 		}
@@ -570,7 +570,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDB( domaindb );
+			ODBConnector.closeRiscossDB( domaindb );
 		}
 	}
 	
@@ -586,7 +586,7 @@ public class AdminManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDBDomain( token );
+			db = ODBConnector.openORiscossDBDomain( token );
 			
 			if( db.isAdmin() ) {
 				if( db.existsDomain( domain ) )
@@ -605,7 +605,7 @@ public class AdminManager {
 					RiscossDB domaindb = null;
 					
 					try {
-						domaindb = DBConnector.openORiscossDB( domain, token );
+						domaindb = ODBConnector.openORiscossDB( domain, token );
 						
 						String rolename = domaindb.getRole( username );
 						
@@ -617,7 +617,7 @@ public class AdminManager {
 						throw e;
 					}
 					finally {
-						DBConnector.closeRiscossDB( domaindb );
+						ODBConnector.closeRiscossDB( domaindb );
 					}
 					
 					return new JsonPrimitive( domain ).toString();
@@ -630,7 +630,7 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
 	

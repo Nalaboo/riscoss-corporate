@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@page import="eu.riscoss.db.RiscossDBDomain"%>
-<%@page import="eu.riscoss.db.DBConnector"%>
+<%@page import="eu.riscoss.db.ODBConnector"%>
 
 <%@ page import="eu.riscoss.db.RiscossDBDomain"%>
 <%@ page import="eu.riscoss.shared.CookieNames"%>
@@ -29,7 +29,7 @@ if (cookies != null) {
 	if( token != null ) {
 		RiscossDBDomain db = null;
 		try {
-			db = DBConnector.openORiscossDBDomain(token);
+			db = ODBConnector.openORiscossDBDomain(token);
 			%><jsp:include page="home.jsp" flush="true"/><%
 			return;
 		}
@@ -42,7 +42,7 @@ if (cookies != null) {
 			response.addCookie(cookie);
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain(db);
+			ODBConnector.closeRiscossDBDomain(db);
 		}
 	}
 		

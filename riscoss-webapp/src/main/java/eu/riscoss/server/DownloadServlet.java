@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDB;
 
 public class DownloadServlet extends HttpServlet {
@@ -23,7 +23,7 @@ public class DownloadServlet extends HttpServlet {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			String name = request.getParameter("name");
 			String type = request.getParameter("type");
@@ -66,7 +66,7 @@ public class DownloadServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	

@@ -58,7 +58,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import eu.riscoss.dataproviders.RiskData;
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RecordAbstraction;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossElements;
@@ -93,7 +93,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			for (String name : db.entities()) {
 				JsonObject o = new JsonObject();
@@ -106,7 +106,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 
 		return a.toString();
@@ -125,7 +125,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			for (String name : db.entities()) {
 				JsonObject o = new JsonObject();
@@ -153,7 +153,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 
 		return a.toString();
@@ -182,7 +182,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			for (String name : db.entities(layer)) {
 				JsonObject o = new JsonObject();
 				o.addProperty("name", name);
@@ -194,7 +194,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 
 		return a.toString();
@@ -229,7 +229,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			SearchParams params = new SearchParams();
 			params.setMax( strMax );
@@ -266,7 +266,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 		return new Gson().toJson( result );
 	}
@@ -341,7 +341,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			JsonObject ret = new JsonObject();
 			db.addEntity(name, layer);
@@ -362,7 +362,7 @@ public class EntityManager {
 			ex.printStackTrace();
 			return "";
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -374,13 +374,13 @@ public class EntityManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			String ret = db.getProperty( RiscossElements.ENTITY, entity, "description", "" );
 			return ret;
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -393,12 +393,12 @@ public class EntityManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			db.setProperty( RiscossElements.ENTITY, entity, "description", description );
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -412,12 +412,12 @@ public class EntityManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			db.editLayer(entity, layer);
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 
@@ -431,7 +431,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			db.removeEntity(entity);
 		}
@@ -439,7 +439,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 
@@ -453,7 +453,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			JsonObject json = new JsonObject();
 
@@ -503,7 +503,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 
@@ -519,7 +519,7 @@ public class EntityManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			Gson gson = new Gson();
 			
@@ -574,7 +574,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -591,7 +591,7 @@ public class EntityManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			db.renameEntity(name, newName);
 			
@@ -614,7 +614,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 
@@ -632,7 +632,7 @@ public class EntityManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			JsonObject json = (JsonObject) new JsonParser().parse(parents);
 			List<String> old_parents = db.getParents( entity );
@@ -649,7 +649,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -666,7 +666,7 @@ public class EntityManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			JsonObject json = new JsonObject();
 			JsonArray array = new JsonArray();
@@ -680,7 +680,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -698,7 +698,7 @@ public class EntityManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			JsonObject json = (JsonObject) new JsonParser().parse(children);
 			List<String> old_children = db.getChildren( entity );
@@ -720,7 +720,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -735,7 +735,7 @@ public class EntityManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			if( child.equals( entity ) ) throw new Exception("Invalid candidate child: an entity can not be child of itself");
 			if( hasDescendant( child, entity, db) ) throw new Exception("Invalid candidate child: cycle detected");
 			List<String> scope = db.getScope( db.layerOf( entity ) );
@@ -743,7 +743,7 @@ public class EntityManager {
 			return "Ok";
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -758,7 +758,7 @@ public class EntityManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			if( child.equals( entity ) ) throw new Exception("Invalid candidate child: an entity can not be parent of itself");
 			if( hasAncestor( child, entity, db) ) throw new Exception("Invalid candidate child: cycle detected");
 			List<String> scope = db.getScope( db.layerOf( child ) );
@@ -766,7 +766,7 @@ public class EntityManager {
 			return "Ok";
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -789,7 +789,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			JsonObject json = new JsonObject();
 			JsonArray array = new JsonArray();
@@ -808,7 +808,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -825,7 +825,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			for (RDC rdc : RDCFactory.get().listRDCs()) {
 				String rdcName = rdc.getName();
@@ -848,7 +848,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 
@@ -864,7 +864,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			System.out.println("Received: " + rdcmapString);
 			JsonObject json = (JsonObject) new JsonParser().parse(rdcmapString);
@@ -896,7 +896,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -911,7 +911,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			JsonObject json = new JsonObject();
 			String msg = "Data successfully stored in the data repository";
@@ -924,9 +924,9 @@ public class EntityManager {
 						rdc.setParameter(par.getName(), db.getRDCParmeter(entityName, rdcName, par.getName(), ""));
 					}
 					try {
-						DBConnector.closeRiscossDB( db );
+						ODBConnector.closeRiscossDB( db );
 						Map<String, RiskData> values = rdc.getIndicators(entityName);
-						db = DBConnector.openORiscossDB(domain, token);
+						db = ODBConnector.openORiscossDB(domain, token);
 						if (values == null) {
 							throw new Exception("The RDC '" + rdcName + "' returned an empty map for the entity '"
 									+ entityName + "'");
@@ -959,7 +959,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 
@@ -972,14 +972,14 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			readImportFile(db);
 			
 		} catch(Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -994,7 +994,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			JsonObject json = new JsonObject();
 			JsonArray array = new JsonArray();
@@ -1007,7 +1007,7 @@ public class EntityManager {
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 
@@ -1021,7 +1021,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			return db.readRASResult(entity);
 		}
@@ -1029,7 +1029,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -1045,7 +1045,7 @@ public class EntityManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			
 			List<String> scope = db.getScope( db.layerOf( entity ) );
 			
@@ -1070,7 +1070,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 //		return "";
 	}
@@ -1112,7 +1112,7 @@ public class EntityManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			Collection<String> layers = db.layerNames();
 			
@@ -1143,7 +1143,7 @@ public class EntityManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	

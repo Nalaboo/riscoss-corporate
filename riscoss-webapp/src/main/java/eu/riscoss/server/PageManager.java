@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.db.SiteManager;
 import eu.riscoss.shared.CookieNames;
@@ -75,7 +75,7 @@ public class PageManager {
 		RiscossDBDomain db = null;
 		
 		try {
-			db = DBConnector.openORiscossDBDomain( getToken() );
+			db = ODBConnector.openORiscossDBDomain( getToken() );
 			
 			SiteManager sm = db.getSiteManager();
 			
@@ -90,7 +90,7 @@ public class PageManager {
 		}
 		finally {
 			if( db != null )
-				DBConnector.closeRiscossDBDomain( db );
+				ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
 	

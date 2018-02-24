@@ -19,7 +19,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientBaseGraph;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.shared.KnownRoles;
 
@@ -47,7 +47,7 @@ public class AuthManager {
 		
 //		System.out.println("#### DB address "+new File(DBConnector.db_addr).getAbsolutePath()+" ####");
 		
-		OrientGraphNoTx graph = new OrientGraphFactory( DBConnector.db_addr, username, password ).getNoTx();
+		OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr, username, password ).getNoTx();
 		
 		try {
 			
@@ -74,13 +74,13 @@ public class AuthManager {
 		
 		RiscossDBDomain db = null;
 		try {
-			db = DBConnector.openORiscossDBDomain( token );
+			db = ODBConnector.openORiscossDBDomain( token );
 		}
 		catch( Exception ex ) {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( db );
+			ODBConnector.closeRiscossDBDomain( db );
 		}
 		return new JsonPrimitive( "Ok" ).toString();
 	}
@@ -91,7 +91,7 @@ public class AuthManager {
 			@HeaderParam("username") String username, 
 			@HeaderParam("password") String password ) {
 		
-		OrientGraphNoTx graph = new OrientGraphFactory( DBConnector.db_addr ).getNoTx();
+		OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr ).getNoTx();
 		
 		try {
 			OSecurity security = graph.getRawGraph().getMetadata().getSecurity();
@@ -137,7 +137,7 @@ public class AuthManager {
 		
 		try {
 			
-			database = DBConnector.openORiscossDBDomain( token );
+			database = ODBConnector.openORiscossDBDomain( token );
 			
 			String username = database.getUsername();
 			
@@ -147,7 +147,7 @@ public class AuthManager {
 			return new JsonPrimitive( "Error" ).toString();
 		}
 		finally {
-			DBConnector.closeRiscossDBDomain( database );
+			ODBConnector.closeRiscossDBDomain( database );
 		}
 		
 	}

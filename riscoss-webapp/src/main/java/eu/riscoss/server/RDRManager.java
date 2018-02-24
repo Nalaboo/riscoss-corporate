@@ -31,7 +31,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDB;
 
 @Path("rdr")
@@ -51,7 +51,7 @@ public class RDRManager {
 		JsonArray json = (JsonArray)new JsonParser().parse( riskData );
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			for( int i = 0; i < json.size(); i++ ) {
 				JsonObject o = json.get( i ).getAsJsonObject();
 				try {
@@ -65,7 +65,7 @@ public class RDRManager {
 			throw e1;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	

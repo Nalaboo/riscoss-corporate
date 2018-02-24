@@ -42,7 +42,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossElements;
 import eu.riscoss.db.SearchParams;
@@ -70,7 +70,7 @@ public class RiskConfManager {
 		
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			if( entity != null ) {
 				if( !entity.equals( "" ) ) {
@@ -96,7 +96,7 @@ public class RiskConfManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 		
 		return a.toString();
@@ -127,7 +127,7 @@ public class RiskConfManager {
 		RiscossDB db = null;
 		try {
 			
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			SearchParams params = new SearchParams();
 			params.setMax( strMax );
@@ -147,7 +147,7 @@ public class RiskConfManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 		return new Gson().toJson( result );
 	}
@@ -171,7 +171,7 @@ public class RiskConfManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			json.addProperty( "name", name );
 			json.addProperty( "type", "layered" );
@@ -207,7 +207,7 @@ public class RiskConfManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -234,7 +234,7 @@ public class RiskConfManager {
 		RiscossDB db = null;
 		
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			jrc.name = name;
 			jrc.type = "layered";
@@ -262,7 +262,7 @@ public class RiskConfManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -278,7 +278,7 @@ public class RiskConfManager {
 		JsonObject json = (JsonObject)new JsonParser().parse( riskConfigs );
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			//String rc = json.get( "name" ).getAsString();
 			try {
 				List<String> list = new ArrayList<String>();
@@ -312,7 +312,7 @@ public class RiskConfManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -328,7 +328,7 @@ public class RiskConfManager {
 		JRiskConfiguration rc = new Gson().fromJson( riskConfigs, JRiskConfiguration.class ); // (JsonObject)new JsonParser().parse( riskConfigs );
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			try {
 				db.setModelsFromRiskCfg( name, rc.models );
@@ -349,7 +349,7 @@ public class RiskConfManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -364,7 +364,7 @@ public class RiskConfManager {
 		//attention:filename sanitation is not directly notified to the user
 		name = RiscossUtil.sanitize(name);
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			db.createRiskConfiguration( name );
 			JsonObject o = new JsonObject();
 			o.addProperty( "name", name );
@@ -374,7 +374,7 @@ public class RiskConfManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -388,7 +388,7 @@ public class RiskConfManager {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			db.removeRiskConfiguration( name );
 			JsonObject o = new JsonObject();
 			o.addProperty( "name", name );
@@ -398,7 +398,7 @@ public class RiskConfManager {
 			throw ex;
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -410,12 +410,12 @@ public class RiskConfManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			return db.getProperty( RiscossElements.RISKCONF, rc, "description", "" );
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	
@@ -428,12 +428,12 @@ public class RiskConfManager {
 			) throws Exception {
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB(domain, token);
+			db = ODBConnector.openORiscossDB(domain, token);
 			db.setProperty( RiscossElements.RISKCONF, rc, "description", description );
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DBConnector.closeRiscossDB(db);
+			ODBConnector.closeRiscossDB(db);
 		}
 	}
 	

@@ -21,7 +21,7 @@
 
 package eu.riscoss.server;
 
-import eu.riscoss.db.DBConnector;
+import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.shared.RiscossUtil;
 import gwtupload.server.UploadAction;
@@ -76,7 +76,7 @@ public class UploadServiceImpl extends UploadAction {
 			RiscossDB db = null;
 			
 			try {
-				db = DBConnector.openORiscossDB( domain, token );
+				db = ODBConnector.openORiscossDB( domain, token );
 				
 				for (FileItem item : sessionFiles) {
 					if (false == item.isFormField()) {
@@ -115,7 +115,7 @@ public class UploadServiceImpl extends UploadAction {
 					}
 				}
 				
-				DBConnector.closeRiscossDB( db );
+				ODBConnector.closeRiscossDB( db );
 				
 				/// Remove files from session because we have a copy of them
 				removeSessionFileItems(request);
@@ -126,7 +126,7 @@ public class UploadServiceImpl extends UploadAction {
 				throw e1;
 			}
 			finally {
-				DBConnector.closeRiscossDB( db );
+				ODBConnector.closeRiscossDB( db );
 			}
 		}
 		
@@ -148,7 +148,7 @@ public class UploadServiceImpl extends UploadAction {
 			RiscossDB db = null;
 			
 			try {
-				db = DBConnector.openORiscossDB( domain, token );
+				db = ODBConnector.openORiscossDB( domain, token );
 				
 				String modelName = null;
 				for (FileItem item : sessionFiles) { //reads the hidden field in which the model name is passed
@@ -190,7 +190,7 @@ public class UploadServiceImpl extends UploadAction {
 					removeSessionFileItems(request);
 				} catch( Exception ex ) {}
 				
-				DBConnector.closeRiscossDB( db );
+				ODBConnector.closeRiscossDB( db );
 			}
 			
 			return response;
@@ -213,7 +213,7 @@ public class UploadServiceImpl extends UploadAction {
 			RiscossDB db = null;
 			
 			try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			String modelName = null;
 			for (FileItem item : sessionFiles) { //reads the hidden field in which the model name is passed
@@ -256,7 +256,7 @@ public class UploadServiceImpl extends UploadAction {
 					removeSessionFileItems(request);
 				} catch( Exception ex ) {}
 				
-				DBConnector.closeRiscossDB( db );
+				ODBConnector.closeRiscossDB( db );
 			}
 			
 			return response;
@@ -279,7 +279,7 @@ public class UploadServiceImpl extends UploadAction {
 			RiscossDB db = null;
 			
 			try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			String name = null;
 			for (FileItem item : sessionFiles) { //reads the hidden field in which the file name is passed
@@ -327,7 +327,7 @@ public class UploadServiceImpl extends UploadAction {
 					removeSessionFileItems(request);
 				} catch( Exception ex ) {}
 				
-				DBConnector.closeRiscossDB( db );
+				ODBConnector.closeRiscossDB( db );
 			}
 			
 			return response;
@@ -350,7 +350,7 @@ public class UploadServiceImpl extends UploadAction {
 			RiscossDB db = null;
 			
 			try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			
 			String name = null;
 			for (FileItem item : sessionFiles) { //reads the hidden field in which the file name is passed
@@ -402,7 +402,7 @@ public class UploadServiceImpl extends UploadAction {
 					removeSessionFileItems(request);
 				} catch( Exception ex ) {}
 				
-				DBConnector.closeRiscossDB( db );
+				ODBConnector.closeRiscossDB( db );
 			}
 			
 			return response;
@@ -455,7 +455,7 @@ public class UploadServiceImpl extends UploadAction {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			//only for checking if empty?
 			String blob = db.getModelBlob( fieldName );
 			if( blob == null ) blob = "";
@@ -467,7 +467,7 @@ public class UploadServiceImpl extends UploadAction {
 			throw new RuntimeException( e );
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 	
@@ -481,14 +481,14 @@ public class UploadServiceImpl extends UploadAction {
 		
 		RiscossDB db = null;
 		try {
-			db = DBConnector.openORiscossDB( domain, token );
+			db = ODBConnector.openORiscossDB( domain, token );
 			db.removeModelBlob( fieldName );
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException( e );
 		}
 		finally {
-			DBConnector.closeRiscossDB( db );
+			ODBConnector.closeRiscossDB( db );
 		}
 	}
 }

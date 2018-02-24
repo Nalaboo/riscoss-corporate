@@ -34,7 +34,7 @@ import eu.riscoss.db.ORiscossDB;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossDBDomain;
 
-public class DBConnector {
+public class ODBConnector {
 	
 	public static String db_addr = null;
 	
