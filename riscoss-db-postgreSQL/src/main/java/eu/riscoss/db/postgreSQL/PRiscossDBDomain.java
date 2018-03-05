@@ -1,8 +1,15 @@
-package eu.riscoss.db;
+package eu.riscoss.db.postgreSQL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+
+import javax.persistence.TypedQuery;
+import org.hibernate.Session;
+
+import eu.riscoss.db.RiscossDBDomain;
+import eu.riscoss.db.SiteManager;
+import eu.riscoss.db.postgreSQL.model.DomainEntity;
 
 
 public class PRiscossDBDomain implements RiscossDBDomain{
@@ -10,6 +17,7 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	private static String url = "jdbc:postgresql://localhost:5432/riscoss-db-postgres";
 	private static String user = "postgres";
 	private static String pass = "admin";
+	private List<String> lstDomainName;
  
 	/**
      * Connect to the PostgreSQL database
@@ -42,20 +50,26 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public List<String> listDomains() {
-		
-		/*List<String> lDomains = new ArrayList <String>();
-		String SQL = "SELECT domainname FROM userrole";
-		try (Connection conn = PRiscossDBDomain_Connect();
-	                Statement stmt = conn.createStatement();
-	                ResultSet rs = stmt.executeQuery(SQL)) {
-	        	 while (rs.next()) {
-	        		 lDomains.add(rs.getString("domainname"));
-	             }
-	        	 return lDomains;
-	        } catch (SQLException ex) {
-	            System.out.println(ex.getMessage());
-	        }	*/    
-		return null;
+		lstDomainName = null;
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+		//List<DomainEntity> lstDomains = (List<DomainEntity>) session.createCriteria(DomainEntity.class).list();			
+       
+        TypedQuery<DomainEntity> query = session.createQuery("FROM domain", DomainEntity.class);
+        List<DomainEntity> domainList = query.getResultList();
+        session.close();
+        
+     /*   TypedQuery<DomainEntity> q = session.createQuery("from Domain", DomainEntity.class);
+        List<DomainEntity> cats = q.getResultList();*/
+        
+        
+        for(DomainEntity domain: domainList)
+        {
+        	lstDomainName.add(domain.getDomainName());
+    		//System.out.println("Domains name: " +  domain.getDomainName());
+        }
+        
+        return lstDomainName;
 	}
 
 	public void close() {
@@ -64,19 +78,26 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public void createDomain(String domainName) {
-		/*String SQL = "INSERT INTO domain (domainname, defaultrole, ispublic) VALUES";
-		try (Connection conn = PRiscossDBDomain_Connect();
-	                Statement stmt = conn.createStatement();
-	                ResultSet rs = stmt.executeQuery(SQL)) {
+		DomainEntity domain = new DomainEntity();
+		domain.setDomainName("Effective Java");
+		domain.setDefaultRole("Joshua Bloch");
+		domain.setIsPublic(true);
 
-	        } catch (SQLException ex) {
-	            System.out.println(ex.getMessage());
-	        }	 */   		
-	}
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+
+		session.save(domain);
+
+		session.getTransaction().commit();
+		session.close();
+  	}
 
 	public void deleteDomain(String domainName) {
 		// TODO Auto-generated method stub
 //buscar el dominio en la BD y entonces eliminarlo, solo con el nombre de dominio		
+    /*    Session session = HibernateUtil.getSessionFactory().openSession();
+		Query query = session.createSQLQuery("Delete");
+		query.executeUpdate();*/
 	}
 
 	public String getRole() {
@@ -125,18 +146,9 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public List<String> listDomains(String username) { //lista los domains de ese usuario
-		/*List<String> lDomains = new ArrayList <String>();
-		String SQL = "SELECT domainname FROM userrole";
-		try (Connection conn = PRiscossDBDomain_Connect();
-	                Statement stmt = conn.createStatement();
-	                ResultSet rs = stmt.executeQuery(SQL)) {
-	        	 while (rs.next()) {
-	        		 lDomains.add(rs.getString("domainname"));
-	             }
-	        	 return lDomains;
-	        } catch (SQLException ex) {
-	            System.out.println(ex.getMessage());
-	        }	    */
+
+		
+		
 		return null;
 	}
 
@@ -153,6 +165,9 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	public boolean existsDomain(String domain) {
 		// TODO Auto-generated method stub
 		//Hacer un select con el nombre pasdo por parametro. Si si se encuentra devolver true si no, false
+		
+		//Domain tirthal = (Domain) session.createQuery("from com.tirthal.learning.mapping.component.Employee employee where employee.firstName = 'Tirthal'").uniqueResult();
+
 		return false;
 	}
  

@@ -8,9 +8,9 @@ public class DomainEntity {
 	@Id
 	@Column(unique = true)
     private String domainname;
-	@Column(unique = true)
+	@Column()
     private String defaultrole;
-	@Column(unique = true)
+	@Column()
     private Boolean ispublic;
 
     public DomainEntity() { }
