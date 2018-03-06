@@ -79,17 +79,9 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 
 	public void createDomain(String domainName) {
 		DomainEntity domain = new DomainEntity();
-		domain.setDomainName("Effective Java");
-		domain.setDefaultRole("Joshua Bloch");
+		domain.setDomainName(domainName);
+		domain.setDefaultRole("");
 		domain.setIsPublic(true);
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		session.save(domain);
-
-		session.getTransaction().commit();
-		session.close();
   	}
 
 	public void deleteDomain(String domainName) {

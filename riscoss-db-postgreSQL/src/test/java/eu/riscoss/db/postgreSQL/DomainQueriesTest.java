@@ -1,16 +1,13 @@
 package eu.riscoss.db.postgreSQL;
 
 import java.util.List;
-
 import javax.persistence.TypedQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 import eu.riscoss.db.postgreSQL.model.DomainEntity;
 
-public class HQLExamples {
+public class DomainQueriesTest {
 	
 	public static void main(String[] args) {
 		System.out.println("Object saved successfully.....!!");
@@ -22,14 +19,21 @@ public class HQLExamples {
 		domain.setDefaultRole("admin");
 		domain.setIsPublic(true);
 
+		// public void createDomain( String domainName ); 
 		DomainEntity domain1 = new DomainEntity();
 		domain1.setDomainName("Eva's Domain");
 		domain1.setDefaultRole("admin");
 		domain1.setIsPublic(true);
 		
+		DomainEntity domain2 = new DomainEntity();
+		domain2.setDomainName("Sarah's Domain");
+		domain2.setDefaultRole("admin");
+		domain2.setIsPublic(false);
+		
 		Transaction tx = session.beginTransaction();
 		session.save(domain);
 		session.save(domain1);
+		session.save(domain2);
 		System.out.println("Object saved successfully.....!!");
 		
         TypedQuery<DomainEntity> query = session.createQuery("from DomainEntity", DomainEntity.class);
@@ -39,6 +43,53 @@ public class HQLExamples {
 		{
 			System.out.println("Funcionaaaa  " + nameDomain.getDomainName());
 		}
+		
+		// public void deleteDomain( String domainName );
+		 DomainEntity customer1=session.get(DomainEntity.class, "Laura's Domain" );
+        if(customer1!=null){
+           session.delete(customer1);
+           System.out.println("Customer 1 is deleted");
+        }
+        
+        // public List<String> listDomains();
+        TypedQuery<DomainEntity> query2 = session.createQuery("from DomainEntity", DomainEntity.class);
+        List<DomainEntity> domainList2 = query2.getResultList();
+			
+		for (DomainEntity nameDomain : domainList2)
+		{
+			System.out.println("Laura deleted  " + nameDomain.getDomainName());
+		}
+        
+		// public List<String> listPublicDomains();
+        TypedQuery<DomainEntity> queryPublic = session.createQuery("from DomainEntity where ispublic= :ispublic", DomainEntity.class);
+        queryPublic.setParameter("ispublic", true);
+        List<DomainEntity> domainListPublic = queryPublic.getResultList();     
+        
+		for (DomainEntity nameDomain : domainListPublic)
+		{
+			System.out.println("Public domains " + nameDomain.getDomainName());
+		}
+		
+		// public boolean existsDomain( String domain );
+        TypedQuery<DomainEntity> queryExists = session.createQuery("from DomainEntity where domainname= :domainname", DomainEntity.class);
+        queryExists.setParameter("domainname", "Sarah's");
+        List<DomainEntity> domainListExists = queryExists.getResultList();     
+        Boolean existsDomain = false;
+        if(domainListExists.size() > 0)
+        	existsDomain = true;
+
+			System.out.println("Exists domains " + existsDomain);
+				
+			
+		// 	public String getPredefinedRole( String domain );
+	    @SuppressWarnings("unchecked")
+		TypedQuery<String> queryDefaultRole = session.createQuery("Select d.defaultrole from DomainEntity d where domainname= :domainname");
+	    queryDefaultRole.setParameter("domainname", "Sarah's Domain");
+	    List<String> domainListDefaultRole = queryDefaultRole.getResultList();   
+	    if(domainListDefaultRole.size() > 0)
+		System.out.println("Default role " + domainListDefaultRole.get(0));
+
+	    
 		
 		tx.commit();
 		session.close();
