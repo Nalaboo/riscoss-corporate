@@ -36,6 +36,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.reflections.Reflections;
 
 import eu.riscoss.db.ODBConnector;
+import eu.riscoss.db.postgreSQL.PDBConnector;
 import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossDBResource;
 import eu.riscoss.db.RiscossDBDomain;
@@ -54,7 +55,8 @@ import eu.riscoss.shared.Pair;
 public class ServletWrapper extends ServletContainer {
 	
 	private static final long serialVersionUID = 2410335502314521014L;
-	
+	static Boolean isPostgreSQLON = true;
+
 	@SuppressWarnings("unused")
 	public void init() throws ServletException {
 		
@@ -108,15 +110,25 @@ public class ServletWrapper extends ServletContainer {
 			}
 			
 			ODBConnector.initDatabase( dbaddr );
+			//Cambiar tanto aqui como en el "hibernate_cfg.xml"
 			
 			System.out.println( "DB address: " + dbaddr );
 			System.out.println( "DB name: " + dbname );
 			
 			String initString = sc.getInitParameter( "eu.riscoss.param.domains.list" );
 			
-			db = ODBConnector.openORiscossDBDomain( superadmin, superpwd );
-			
-			db.init();
+			if(isPostgreSQLON)
+			{
+				PDBConnector.initDatabase( "jdbc:postgresql://localhost:5432/riscoss-db-postgres" );
+				db = PDBConnector.openPRiscossDBDomain("admin", "admin");
+				db.init();
+				
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain( superadmin, superpwd );
+				db.init();
+			}
 			
 			for( KnownRoles r : KnownRoles.values() ) {
 				db.createRole( r.name() );
@@ -199,7 +211,10 @@ public class ServletWrapper extends ServletContainer {
 			e.printStackTrace();
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( db );
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain( db );
+			}
 		}
 		
 		Reflections reflections = new Reflections( RDCRunner.class.getPackage().getName() );

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.db.SiteManager;
+import eu.riscoss.db.postgreSQL.PDBConnector;
 import eu.riscoss.shared.CookieNames;
 
 /*
@@ -36,7 +37,8 @@ So the answer of the question really depends on how the url-pattern is configure
 public class PageManager {
 	
 	private HttpServletRequest request;
-	
+	static Boolean isPostgreSQLON = true;
+
 	Map<String,String> cookies = new HashMap<>();
 	
 	public PageManager( HttpServletRequest req ) {
@@ -75,8 +77,14 @@ public class PageManager {
 		RiscossDBDomain db = null;
 		
 		try {
-			db = ODBConnector.openORiscossDBDomain( getToken() );
-			
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(getToken());
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain( getToken() );
+			}				
 			SiteManager sm = db.getSiteManager();
 			
 			String url = request.getServletPath();
@@ -89,7 +97,7 @@ public class PageManager {
 			return false;
 		}
 		finally {
-			if( db != null )
+			if( db != null && !isPostgreSQLON)
 				ODBConnector.closeRiscossDBDomain( db );
 		}
 	}

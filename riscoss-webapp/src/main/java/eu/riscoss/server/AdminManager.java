@@ -26,6 +26,7 @@ import eu.riscoss.db.RiscossDB;
 import eu.riscoss.db.RiscossDBResource;
 import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.db.SiteManager;
+import eu.riscoss.db.postgreSQL.PDBConnector;
 import eu.riscoss.shared.DBResource;
 import eu.riscoss.shared.JDomainInfo;
 import eu.riscoss.shared.JRoleInfo;
@@ -40,6 +41,7 @@ import eu.riscoss.shared.Pair;
 @Info("Administration")
 public class AdminManager {
 	
+	static Boolean isPostgreSQLON = true;
 	Gson gson = new Gson();
 	
 	int counter = 0;
@@ -54,8 +56,14 @@ public class AdminManager {
 		
 		try {
 			
-			db = ODBConnector.openORiscossDBDomain( token );
-			
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain( token );
+			}			
 			JSiteMap sitemap = new JSiteMap();
 			
 			sitemap.domain = domain;
@@ -71,7 +79,7 @@ public class AdminManager {
 		}
 		finally {
 			
-			if( db != null )
+			if( db != null && !isPostgreSQLON)
 				ODBConnector.closeRiscossDBDomain( db );
 		}
 	}
@@ -108,8 +116,14 @@ public class AdminManager {
 		RiscossDBDomain db = null;
 		
 		try {
-			
-			db = ODBConnector.openORiscossDBDomain( null, null );
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(null,null);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain(null,null);
+			}			
 			JsonArray array = new JsonArray();
 			for( String roleName : db.listRoles() ) {
 				if( roleName != null )
@@ -121,7 +135,10 @@ public class AdminManager {
 			throw ex;
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( db );
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain(db);
+			}
 		}
 	}
 	
@@ -134,8 +151,14 @@ public class AdminManager {
 		RiscossDBDomain db = null;
 		
 		try {
-			
-			db = ODBConnector.openORiscossDBDomain( token );
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain( token );
+			}
 			db.createDomain( name );
 			RiscossDB domainDB = ODBConnector.openORiscossDB( name, token );
 			for( KnownRoles r : KnownRoles.values() ) {
@@ -151,7 +174,10 @@ public class AdminManager {
 			throw ex;
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( db );
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain( db );
+			}		
 		}
 	}
 	
@@ -164,8 +190,14 @@ public class AdminManager {
 		RiscossDBDomain db = null;
 		
 		try {
-			
-			db = ODBConnector.openORiscossDBDomain( token );
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain( token );
+			}
 			db.deleteDomain( domain );
 			
 		}
@@ -173,7 +205,10 @@ public class AdminManager {
 			throw ex;
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( db );
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain( db );
+			}
 		}
 	}
 	
@@ -249,7 +284,14 @@ public class AdminManager {
 		
 		try {
 			
-			db = ODBConnector.openORiscossDBDomain( token );
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain(token);
+			}
 			
 			JsonArray array = new JsonArray();
 			
@@ -268,8 +310,10 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( db );
-		}
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain(db);
+			}		}
 	}
 	
 	@GET @Path("/users/{user}/info")
@@ -287,20 +331,33 @@ public class AdminManager {
 			@HeaderParam("token") @Info("The authentication token") String token,
 			@PathParam("user") @Info("Name of the user dto be deleted") String username
 			) {
-		
-		OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr ).getNoTx();
-		
-		try {
-			
-			OSecurity security = graph.getRawGraph().getMetadata().getSecurity();
-			
-			security.dropUser( username );
-			
+		if(isPostgreSQLON)
+		{
+			RiscossDBDomain db;
+			try {
+				db = PDBConnector.openPRiscossDBDomain(token);
+				db.deleteUser(username);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		finally {
+		else
+		{
+			OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr ).getNoTx();
 			
-			if( graph != null )
-				graph.getRawGraph().close();
+			try {
+				
+				OSecurity security = graph.getRawGraph().getMetadata().getSecurity();
+				
+				security.dropUser( username );
+				
+			}
+			finally {
+				
+				if( graph != null )
+					graph.getRawGraph().close();
+			}
 		}
 	}
 	
@@ -367,8 +424,14 @@ public class AdminManager {
 		
 		try {
 			
-			db = ODBConnector.openORiscossDBDomain( token );
-			
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain( token );
+			}			
 			JDomainInfo dinfo = new JDomainInfo();
 			
 			dinfo.name = domain;
@@ -380,7 +443,10 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( db );
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain( db );
+			}		
 		}
 		
 	}
@@ -418,7 +484,14 @@ public class AdminManager {
 			RiscossDBDomain db = null;
 			
 			try {
-				db = ODBConnector.openORiscossDBDomain(null,null);
+				if(isPostgreSQLON)
+				{
+					db = PDBConnector.openPRiscossDBDomain(null,null);
+				}
+				else
+				{
+					db = ODBConnector.openORiscossDBDomain(null,null);
+				}
 				for (String domain : db.listDomains()) {
 					if (domain != null)
 						set.add(domain);
@@ -426,7 +499,10 @@ public class AdminManager {
 			} catch (Exception e) {
 				throw e;
 			} finally {
-				ODBConnector.closeRiscossDBDomain(db);
+				if(!isPostgreSQLON)
+				{
+					ODBConnector.closeRiscossDBDomain(db);
+				}
 			}
 		}
 		return set;
@@ -439,7 +515,14 @@ public class AdminManager {
 			RiscossDBDomain db = null;
 			
 			try {
-				db = ODBConnector.openORiscossDBDomain( null, null );
+				if(isPostgreSQLON)
+				{
+					db = PDBConnector.openPRiscossDBDomain(null,null);
+				}
+				else
+				{
+					db = ODBConnector.openORiscossDBDomain(null,null);
+				}
 				
 				if( username == null ) username = db.getUsername();
 				
@@ -451,15 +534,24 @@ public class AdminManager {
 				throw e;
 			}
 			finally {
-				ODBConnector.closeRiscossDBDomain( db );
+				if(!isPostgreSQLON)
+				{
+					ODBConnector.closeRiscossDBDomain(db);
+				}			
 			}
 		}
 		
 		if( token.length() > 1 ) {
 			RiscossDBDomain db = null;
 			if( !"".equals( username ) ) try {
-				db = ODBConnector.openORiscossDBDomain( token );
-				
+				if(isPostgreSQLON)
+				{
+					db = PDBConnector.openPRiscossDBDomain(token);
+				}
+				else
+				{
+					db = ODBConnector.openORiscossDBDomain(token);
+				}				
 				if( db.getUsername().equals( username ) ) {
 					for( String domain : db.listDomains( username ) ) {
 						if( domain != null )
@@ -470,7 +562,10 @@ public class AdminManager {
 				throw e;
 			}
 			finally {
-				ODBConnector.closeRiscossDBDomain( db );
+				if(!isPostgreSQLON)
+				{
+					ODBConnector.closeRiscossDBDomain(db);
+				}			
 			}
 		}
 		
@@ -488,8 +583,14 @@ public class AdminManager {
 		RiscossDBDomain db = null;
 		
 		try {
-			
-			db = ODBConnector.openORiscossDBDomain( token );
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain(token);
+			}
 			
 			db.setPredefinedRole( domain, value );
 			
@@ -586,8 +687,14 @@ public class AdminManager {
 		
 		try {
 			
-			db = ODBConnector.openORiscossDBDomain( token );
-			
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain( token );
+			}			
 			if( db.isAdmin() ) {
 				if( db.existsDomain( domain ) )
 					return new JsonPrimitive( domain ).toString();
@@ -630,7 +737,10 @@ public class AdminManager {
 			throw e;
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( db );
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain(db);
+			}	
 		}
 	}
 	

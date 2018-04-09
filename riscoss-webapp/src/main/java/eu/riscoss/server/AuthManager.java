@@ -1,6 +1,10 @@
 package eu.riscoss.server;
 
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -21,7 +25,10 @@ import com.tinkerpop.blueprints.impls.orient.OrientGraphNoTx;
 
 import eu.riscoss.db.ODBConnector;
 import eu.riscoss.db.RiscossDBDomain;
+import eu.riscoss.db.postgreSQL.PDBConnector;
 import eu.riscoss.shared.KnownRoles;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Path("auth")
 @Info("Authentication and Authorization")
@@ -31,6 +38,7 @@ public class AuthManager {
 		new OServerParameterConfiguration( OrientTokenHandler.SIGN_KEY_PAR, "any key"),
 		new OServerParameterConfiguration( OrientTokenHandler.SESSION_LENGHT_PAR, "525600000" ) // ( 1000* 60 * 24 * 365 ) ) = 1 year
 	};
+	static Boolean isPostgreSQLON = true;
 	
 	/**
 	 * Logs in on the DB
@@ -47,22 +55,30 @@ public class AuthManager {
 		
 //		System.out.println("#### DB address "+new File(DBConnector.db_addr).getAbsolutePath()+" ####");
 		
-		OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr, username, password ).getNoTx();
-		
-		try {
-			
-			String token = getStringToken( graph );
-			
-//			System.out.println( "Login succeeded. Token:" );
-//			System.out.println( token );
-//			System.out.println( EncodingUtil.encrypt( username + "\n" + password ) );
-			
-			return new JsonPrimitive( token ).toString();
+		/*if(isPostgreSQLON)
+		{
+			String tokenP = getStringTokenJJWT(username, password );
+			return tokenP;
 		}
-		finally {
-			if( graph != null )
-				graph.getRawGraph().close();
-		}
+		else
+		{*/
+			OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr, username, password ).getNoTx();
+			
+			try {
+				
+				String token = getStringToken( graph );
+				
+	//			System.out.println( "Login succeeded. Token:" );
+	//			System.out.println( token );
+	//			System.out.println( EncodingUtil.encrypt( username + "\n" + password ) );
+				
+				return new JsonPrimitive( token ).toString();
+			}
+			finally {
+				if( graph != null )
+					graph.getRawGraph().close();
+			}
+		//}
 	}
 	
 	@GET @Path("token")
@@ -74,13 +90,23 @@ public class AuthManager {
 		
 		RiscossDBDomain db = null;
 		try {
-			db = ODBConnector.openORiscossDBDomain( token );
+			if(isPostgreSQLON)
+			{
+				db = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				db = ODBConnector.openORiscossDBDomain( token );
+			}
 		}
 		catch( Exception ex ) {
 			throw ex;
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( db );
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain( db );
+			}
 		}
 		return new JsonPrimitive( "Ok" ).toString();
 	}
@@ -89,34 +115,80 @@ public class AuthManager {
 	@Info("Registers a new user into the database")
 	public String register(
 			@HeaderParam("username") String username, 
-			@HeaderParam("password") String password ) {
-		
-		OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr ).getNoTx();
-		
-		try {
-			OSecurity security = graph.getRawGraph().getMetadata().getSecurity();
-			
-			ORole guest = security.getRole( KnownRoles.Consumer.name() );
-			
-			if( guest == null ) {
-				guest = security.createRole( KnownRoles.Consumer.name(), OSecurityRole.ALLOW_MODES.ALLOW_ALL_BUT );
-			}
-			
-			security.createUser( username, password, guest );
-			
-			// Already return the login token?
-//			graph.getRawGraph().close();
-//			
-//			graph = new OrientGraphFactory( DBConnector.db_addr, username, password ).getNoTx();
-//			
-//			return new JsonPrimitive( getStringToken( graph ) ).toString();
-			
+			@HeaderParam("password") String password ) throws Exception {
+	/*	if(isPostgreSQLON)
+		{
+			RiscossDBDomain db = null;
+			db = PDBConnector.openPRiscossDBDomain(username, password);
+			db.createUser(username, password);
 			return new JsonPrimitive( "Ok" ).toString();
 		}
-		finally {
-			if( graph != null )
-				graph.getRawGraph().close();
-		}
+		else
+		{
+			OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr ).getNoTx();
+			
+			try {
+				OSecurity security = graph.getRawGraph().getMetadata().getSecurity();
+				
+				ORole guest = security.getRole( KnownRoles.Consumer.name() );
+				
+				if( guest == null ) {
+					guest = security.createRole( KnownRoles.Consumer.name(), OSecurityRole.ALLOW_MODES.ALLOW_ALL_BUT );
+				}
+				
+				security.createUser( username, password, guest );
+				
+				// Already return the login token?
+	//			graph.getRawGraph().close();
+	//			
+	//			graph = new OrientGraphFactory( DBConnector.db_addr, username, password ).getNoTx();
+	//			
+	//			return new JsonPrimitive( getStringToken( graph ) ).toString();
+				
+				return new JsonPrimitive( "Ok" ).toString();
+			}
+			finally {
+				if( graph != null )
+					graph.getRawGraph().close();
+			}*/
+			RiscossDBDomain db = null;
+			db = PDBConnector.openPRiscossDBDomain(username, password);
+			db.createUser(username, password);
+
+			OrientGraphNoTx graph = new OrientGraphFactory( ODBConnector.db_addr ).getNoTx();
+			
+			try {
+				OSecurity security = graph.getRawGraph().getMetadata().getSecurity();
+				
+				ORole guest = security.getRole( KnownRoles.Consumer.name() );
+				
+				if( guest == null ) {
+					guest = security.createRole( KnownRoles.Consumer.name(), OSecurityRole.ALLOW_MODES.ALLOW_ALL_BUT );
+				}
+				security.createUser( username, password, guest );
+				
+				return new JsonPrimitive( "Ok" ).toString();
+			}
+			finally {
+				if( graph != null )
+					graph.getRawGraph().close();
+			}
+		
+	}
+	
+	String getStringTokenJJWT( String username, String password ) throws IOException {
+		String jwt = Jwts.builder()
+				  .setSubject("users/TzMUocMF4p")
+				  .setExpiration(new Date(1300819380))
+				  .claim("username", username)
+				  .claim("password", password)
+				  .signWith(
+				    SignatureAlgorithm.HS256,
+				    "secret".getBytes("UTF-8")
+				  )
+				  .compact();
+		
+		return  jwt;
 	}
 	
 	String getStringToken( OrientBaseGraph graph ) {
@@ -136,8 +208,14 @@ public class AuthManager {
 		RiscossDBDomain database = null;
 		
 		try {
-			
-			database = ODBConnector.openORiscossDBDomain( token );
+			if(isPostgreSQLON)
+			{
+				database = PDBConnector.openPRiscossDBDomain(token);
+			}
+			else
+			{
+				database = ODBConnector.openORiscossDBDomain( token );
+			}
 			
 			String username = database.getUsername();
 			
@@ -147,7 +225,10 @@ public class AuthManager {
 			return new JsonPrimitive( "Error" ).toString();
 		}
 		finally {
-			ODBConnector.closeRiscossDBDomain( database );
+			if(!isPostgreSQLON)
+			{
+				ODBConnector.closeRiscossDBDomain(database);
+			}		
 		}
 		
 	}

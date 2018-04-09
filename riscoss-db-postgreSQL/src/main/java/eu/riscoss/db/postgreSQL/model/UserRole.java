@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "userrole")
-public class UserRoleEntity implements Serializable{
+public class UserRole implements Serializable{
 	
 	/**
 	 * 
@@ -14,34 +14,41 @@ public class UserRoleEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique = true)
+	@Column(unique = false)
     private String username;
 	
 	@Id
-	@Column(unique = true)
-    private String domainname;
+	@Column(unique = false)
+    private String domainName;
 	
 	@Column(unique = false)
     private String role;
 	
-    public UserRoleEntity() { }
+    public UserRole() { }
     
-    public String getUserName()
+    public UserRole(String userName, String domainName, String role) 
+    { 
+    	this.username = userName;
+    	this.domainName = domainName;
+    	this.role = role;
+    }
+    
+    public String getUsername()
     {
         return username;
     }
-    public void setUserName(String username)
+    public void setUsername(String username)
     {
         this.username = username;
     }
     
     public String getDomainName()
     {
-        return domainname;
+        return domainName;
     }
-    public void setDomainName(String domainname)
+    public void setDomainName(String domainName)
     {
-        this.domainname = domainname;
+        this.domainName = domainName;
     }
     
     public String getRole()
@@ -56,7 +63,7 @@ public class UserRoleEntity implements Serializable{
     @Override
     public String toString()
     {
-        return "UserRole [username=" + username + ", domainname=" + domainname + ", role=" + role + "]";
+        return "UserRole [username=" + username + ", domainName=" + domainName + ", role=" + role + "]";
     }
     
 }

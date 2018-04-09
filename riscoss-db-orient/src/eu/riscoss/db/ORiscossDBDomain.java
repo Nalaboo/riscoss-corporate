@@ -213,5 +213,17 @@ public class ORiscossDBDomain implements RiscossDBDomain {
 	public boolean existsDomain( String domain ) {
 		return container.containsDomain( domain );
 	}
+
+	@Override
+	public void deleteUser(String username) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createUser(String username, String password) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

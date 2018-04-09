@@ -1,5 +1,5 @@
 package eu.riscoss.db.postgreSQL;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +12,7 @@ import eu.riscoss.db.postgreSQL.model.*;
 
 public class App 
 {
-    private static final Logger logger = Logger.getLogger(App.class);
+  //  private static final Logger logger = Logger.getLogger(App.class);
 
     public static void main(String[] args)
     {
@@ -31,7 +31,7 @@ public class App
         }
         catch (Exception e) {
             StandardServiceRegistryBuilder.destroy(registry);
-            logger.error("cannot create sessionFactory", e);
+           // logger.error("cannot create sessionFactory", e);
             System.exit(1);
         }
 
@@ -40,16 +40,16 @@ public class App
         Transaction tx = session.beginTransaction();
 
         try {
-            DomainEntity domainEntity = new DomainEntity();
+            Domain domainEntity = new Domain();
             domainEntity.setDomainName("super foo");
-            domainEntity.setDefaultRole("admin");
-            domainEntity.setIsPublic(true);            
+           // domainEntity.setDefaultRole("admin");
+            //domainEntity.setIsPublic(true);            
             session.persist(domainEntity);
             tx.commit();
         }
         catch (Exception e) {
             tx.rollback();
-            logger.error("cannot commit transaction", e);
+          //  logger.error("cannot commit transaction", e);
         }
         finally {
             session.close();

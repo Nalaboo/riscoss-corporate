@@ -7,18 +7,15 @@
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">admin</property>
     <property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/riscoss-db-postgres</property>
-    <!-- JDBC connection pool (use the built-in) -->
-    <property name="connection.pool_size">1</property>
-    <!-- Disable the second-level cache  -->
-    <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
-    <!-- Log SQL queries -->
-    <property name="format_sql">true</property>
-    <property name="use_sql_comments">true</property>
     <!-- Drop and re-create the database schema on startup -->
     <property name="hbm2ddl.auto">create</property>
+    <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="use_sql_comments">true</property>
     <!-- MAPPINGS -->
-    <mapping class="eu.riscoss.db.postgreSQL.model.DomainEntity"/>
-	<mapping class="eu.riscoss.db.postgreSQL.model.UserEntity"/>
-	<mapping class="eu.riscoss.db.postgreSQL.model.UserRoleEntity"/>
+    <mapping class="eu.riscoss.db.postgreSQL.model.Domain"/>
+	<mapping class="eu.riscoss.db.postgreSQL.model.User"/>
+	<mapping class="eu.riscoss.db.postgreSQL.model.UserRole"/>
+	<mapping class="eu.riscoss.db.postgreSQL.model.Role"/>
   </session-factory>
 </hibernate-configuration>

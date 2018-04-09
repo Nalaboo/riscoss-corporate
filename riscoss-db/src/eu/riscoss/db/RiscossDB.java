@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Riscoss database access, for all accesses to the database content (except users and domain) with a defined domain and user credentials
- * For access to changing domains and users only, "RiscossDatabase" has to be used.
+ * For access to changing domains and users only, "RiscossDBDomain" has to be used.
  */
 public interface RiscossDB {
 	

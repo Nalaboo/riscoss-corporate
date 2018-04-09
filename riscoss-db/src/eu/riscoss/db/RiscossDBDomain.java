@@ -40,5 +40,9 @@ public interface RiscossDBDomain {
 	public SiteManager getSiteManager();
 
 	public boolean existsDomain( String domain );
+
+	public void deleteUser(String username);
+
+	public void createUser(String username, String password);
 	
 }

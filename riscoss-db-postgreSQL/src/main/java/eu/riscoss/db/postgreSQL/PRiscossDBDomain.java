@@ -4,12 +4,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.persistence.TypedQuery;
-import org.hibernate.Session;
-
 import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.db.SiteManager;
-import eu.riscoss.db.postgreSQL.model.DomainEntity;
+import eu.riscoss.db.postgreSQL.model.DomainService;
+import eu.riscoss.db.postgreSQL.model.RoleDAO;
+import eu.riscoss.db.postgreSQL.model.UserDAO;
+import eu.riscoss.db.postgreSQL.model.UserRoleDAO;
 
 
 public class PRiscossDBDomain implements RiscossDBDomain{
@@ -17,8 +17,10 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	private static String url = "jdbc:postgresql://localhost:5432/riscoss-db-postgres";
 	private static String user = "postgres";
 	private static String pass = "admin";
-	private List<String> lstDomainName;
+	private String username;
  
+	
+	
 	/**
      * Connect to the PostgreSQL database
      *
@@ -38,38 +40,30 @@ public class PRiscossDBDomain implements RiscossDBDomain{
         
         return null;
     }
+    
+    public PRiscossDBDomain( String addr, String username, String password) {
+		
+    	this.username = username;
+		
+	}
+	
+	public PRiscossDBDomain( String addr, byte[] tokenBytes ) {
+		
+
+		
+	}
 
 	public void init() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return username;
 	}
 
 	public List<String> listDomains() {
-		lstDomainName = null;
-
-        Session session = HibernateUtil.getSessionFactory().openSession();
-		//List<DomainEntity> lstDomains = (List<DomainEntity>) session.createCriteria(DomainEntity.class).list();			
-       
-        TypedQuery<DomainEntity> query = session.createQuery("FROM domain", DomainEntity.class);
-        List<DomainEntity> domainList = query.getResultList();
-        session.close();
-        
-     /*   TypedQuery<DomainEntity> q = session.createQuery("from Domain", DomainEntity.class);
-        List<DomainEntity> cats = q.getResultList();*/
-        
-        
-        for(DomainEntity domain: domainList)
-        {
-        	lstDomainName.add(domain.getDomainName());
-    		//System.out.println("Domains name: " +  domain.getDomainName());
-        }
-        
-        return lstDomainName;
+		DomainService domainService = new DomainService();
+		return domainService.findAll();
 	}
 
 	public void close() {
@@ -78,23 +72,23 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public void createDomain(String domainName) {
-		DomainEntity domain = new DomainEntity();
-		domain.setDomainName(domainName);
-		domain.setDefaultRole("");
-		domain.setIsPublic(true);
+		DomainService domainService = new DomainService();
+		domainService.createDomain(domainName);
   	}
 
 	public void deleteDomain(String domainName) {
-		// TODO Auto-generated method stub
-//buscar el dominio en la BD y entonces eliminarlo, solo con el nombre de dominio		
-    /*    Session session = HibernateUtil.getSessionFactory().openSession();
-		Query query = session.createSQLQuery("Delete");
-		query.executeUpdate();*/
+		DomainService domainDao = new DomainService();
+		domainDao.delete(domainName);;
 	}
 
 	public String getRole() {
-		// TODO Auto-generated method stub
-		return null;
+		String role = "";
+		UserDAO userDAO = new UserDAO();
+		if (userDAO.isAdmin(username))
+		{
+			role = "admin";
+		}
+		return role;
 	}
 
 	public void setRoleProperty(String role, String key, String value) {
@@ -108,45 +102,43 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public List<String> listRoles() {
-		// TODO Auto-generated method stub
-		return null;
+		RoleDAO roleDao = new RoleDAO();
+		return roleDao.listRoles();
 	}
 
 	public List<String> listUsers(String from, String max, String pattern) {
-		// TODO Auto-generated method stub
-		return null;
+		UserDAO userDAO = new UserDAO();
+		return userDAO.listUsers(pattern);
 	}
 
 	public List<String> listPublicDomains() {
-		//Dominios pblicos para ese usuario
-		return null;
+		DomainService domainService = new DomainService();
+		return domainService.findAllPublic();
 	}
 
 	public void setPredefinedRole(String domain, String value) {
-		// TODO Auto-generated method stub
-		
+		DomainService domainService = new DomainService();
+		domainService.setPredefinedRole(domain, value);		
 	}
 
 	public String getPredefinedRole(String domain) {
-		// TODO Auto-generated method stub
-		return null;
+		DomainService domainService = new DomainService();
+		return domainService.getPredefinedRole(domain);
 	}
 
 	public void createRole(String roleName) {
-		// TODO Auto-generated method stub
-		
+		RoleDAO roleDao = new RoleDAO();
+		roleDao.createRole(roleName);
 	}
 
-	public List<String> listDomains(String username) { //lista los domains de ese usuario
-
-		
-		
-		return null;
+	public List<String> listDomains(String username) { 
+		UserRoleDAO userRoleDao = new UserRoleDAO();
+		return userRoleDao.listDomains(username);
 	}
 
 	public boolean isAdmin() {
-		// TODO Auto-generated method stub
-		return false;
+		UserDAO userDAO = new UserDAO();
+		return userDAO.isAdmin(username);
 	}
 
 	public SiteManager getSiteManager() {
@@ -155,14 +147,20 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public boolean existsDomain(String domain) {
-		// TODO Auto-generated method stub
-		//Hacer un select con el nombre pasdo por parametro. Si si se encuentra devolver true si no, false
-		
-		//Domain tirthal = (Domain) session.createQuery("from com.tirthal.learning.mapping.component.Employee employee where employee.firstName = 'Tirthal'").uniqueResult();
-
-		return false;
+		DomainService domainService = new DomainService();
+		return domainService.existsDomain(domain);
 	}
  
-    
+	public void deleteUser(String userName)//tiene que eliminar tambien de la tabla USerRole
+	{
+		UserDAO userDAO = new UserDAO();
+		userDAO.delete(userName);
+	}
+
+	public void createUser(String userName, String password)
+	{
+		UserDAO userDAO = new UserDAO();
+		userDAO.createUser(userName, password, "", "");
+	}
 	
 }
