@@ -69,7 +69,7 @@ public class UserDAO {
 		s.close();
 		if(lPasswords != null && lPasswords.size() > 0)
 		{
-			String encryptedpasswordToCheck = DigestUtils.md2Hex(passwordToCheck);
+			String encryptedpasswordToCheck = DigestUtils.md5Hex(passwordToCheck);
 			if(encryptedpasswordToCheck == lPasswords.get(0))
 			{
 				isEqual = true;

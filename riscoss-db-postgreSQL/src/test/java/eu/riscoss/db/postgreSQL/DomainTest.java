@@ -1,11 +1,14 @@
 package eu.riscoss.db.postgreSQL;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 
 import eu.riscoss.db.postgreSQL.model.Domain;
 import eu.riscoss.db.postgreSQL.model.DomainService;
 import eu.riscoss.db.postgreSQL.model.Role;
+import eu.riscoss.db.postgreSQL.model.RoleDAO;
 /**
  * This class tests the functions implemented in DomainDAO
 */
@@ -16,24 +19,42 @@ public class DomainTest {
 		List<String> lAllPublicDomains;
 
 		DomainService domainService = new DomainService();
+		RoleDAO roleDAO = new RoleDAO();
 		Role role1 = new Role();
 		role1.setRoleName("admin");
 		Role role2 = new Role();
 		role2.setRoleName("cosumer");
 		Role role3 = new Role();
 		role3.setRoleName("modeler");
-		/*Domain domain1 = new Domain("Maria's Domain", role1, true);
+		Domain domain1 = new Domain("Maria's Domain", role1, true);
 		Domain domain2 = new Domain("Elena's Domain", role1, false);
 		Domain domain3 = new Domain("Joan's Domain", role2, false);
-		Domain domain4 = new Domain("Marc's Domain", role3, true);*/
-		Domain domain1 = new Domain("Maria's Domain", "admin", true);
+		Domain domain4 = new Domain("Marc's Domain", role3, true);
+		
+		
+		/*Domain domain1 = new Domain("Maria's Domain", "admin", true);
 		Domain domain2 = new Domain("Elena's Domain", "admin", false);
 		Domain domain3 = new Domain("Joan's Domain", "cosumer", false);
-		Domain domain4 = new Domain("Marc's Domain", "modeler", true);
+		Domain domain4 = new Domain("Marc's Domain", "modeler", true);*/
 		domainService.save(domain1);
 		domainService.save(domain2);
 		domainService.save(domain3);		
 		domainService.save(domain4);
+		
+		/*Set<Domain> domains = new HashSet<Domain>();
+		domains.add(domain1);
+		domains.add(domain2);
+		role1.setDomains(domains);
+		roleDAO.save(role1);
+		Set<Domain> domains2 = new HashSet<Domain>();
+		domains2.add(domain2);
+		role2.setDomains(domains2);
+		roleDAO.save(role2);
+		Set<Domain> domains3 = new HashSet<Domain>();
+		domains3.add(domain3);
+		role2.setDomains(domains3);
+		roleDAO.save(role3);*/
+		
 		
 		lAllDomains = domainService.findAll();
 		System.out.println("All domains are :");

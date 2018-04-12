@@ -1,5 +1,8 @@
 package eu.riscoss.db.postgreSQL.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,6 +24,8 @@ public class User {
 	
 	@Column(unique = false)
     private Boolean isSuperAdmin;
+	
+	
 
     public User() { }
     

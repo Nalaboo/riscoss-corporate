@@ -25,7 +25,7 @@ import eu.riscoss.db.postgreSQL.HibernateUtil;
 /**
  * This class implements the functions related to the UserRole.
 */
-public class UserRoleDAO {
+public class UserDomainRoleDAO {
 	
 	/**
 	*This method is used to list the users that have role as the parameter role
@@ -80,9 +80,9 @@ public class UserRoleDAO {
         //Funciona ok -maven build
         CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
         CriteriaQuery<String> criteriaQuery = criteriaBuilder.createQuery(String.class);
-        Root<UserRole> root = criteriaQuery.from(UserRole.class);
-        criteriaQuery.select(root.<String>get("username")).distinct(true);
-        criteriaQuery.where(criteriaBuilder.equal(root.get("role"), role));
+        Root<UserDomainRole> root = criteriaQuery.from(UserDomainRole.class);
+        criteriaQuery.select(root.get("id").get("user").<String>get("username")).distinct(true);
+        criteriaQuery.where(criteriaBuilder.equal(root.get("role").get("roleName"), role));
 
         Query<String> query = s.createQuery(criteriaQuery);
 
@@ -155,16 +155,19 @@ public class UserRoleDAO {
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		List<String> lDomainsName = new ArrayList<String>();
+		
+		//Query query = this.em.createQuery("SELECT conc FROM Concept conc WHERE conc.conceptPK.id =:cid order by conc.conceptPK.effectiveTime desc");
+		User user =  (User) s.get(User.class, username);
 
-		TypedQuery<String> query = s.createQuery("select domainName from UserRole where username= :username", String.class);
-        query.setParameter("username", username);
-        List<String> domainNameList = query.getResultList();     
+		TypedQuery<Domain> query = s.createQuery("select ur.id.domain from UserRole ur where ur.id.user= :user", Domain.class);
+        query.setParameter("user", user);
+        List<Domain> domainNameList = query.getResultList();     
         
         if(domainNameList != null && domainNameList.size() > 0)
         {
-    		for (String domainName : domainNameList)
+    		for (Domain domainName : domainNameList)
     		{
-    			lDomainsName.add(domainName);
+    			lDomainsName.add(domainName.getDomainName());
     		}
         }
     	s.close();		
@@ -192,8 +195,8 @@ public class UserRoleDAO {
        
 		CriteriaBuilder builder = s.getCriteriaBuilder();
         CriteriaQuery<String> query = builder.createQuery(String.class);
-        Root<UserRole> root = query.from(UserRole.class);
-        query.select(root.<String>get("role")).where(builder.equal(root.get("domainName"), domainName));
+        Root<UserDomainRole> root = query.from(UserDomainRole.class);
+        query.select(root.<String>get("role")).where(builder.equal(root.get("id").get("domain").get("domainName"), domainName));
         query.distinct(true);
         Query<String> q= s.createQuery(query);
         List<String> userRoleList=q.getResultList();
@@ -233,14 +236,17 @@ public class UserRoleDAO {
         }*/
 		
 		Session s = HibernateUtil.getSessionFactory().openSession();
-		TypedQuery<UserRole> query = s.createQuery("from UserRole where username= :username AND domainName= :domainName", UserRole.class);
-		query.setParameter("username", username);
-		query.setParameter("domainName", domainName);
-        List<UserRole> userRole = query.getResultList();     
+		User user =  (User) s.get(User.class, username);
+		Domain domain =  (Domain) s.get(Domain.class, domainName);
+		//select ur.id.domain from UserRole ur where ur.id.user= :user
+		TypedQuery<UserDomainRole> query = s.createQuery("from UserRole ur where ur.id.user= :user AND ur.id.domain= :domain", UserDomainRole.class);
+		query.setParameter("user", user);
+		query.setParameter("domain", domain);
+        List<UserDomainRole> userDomainRole = query.getResultList();     
 		s.close();
-        if(userRole != null && userRole.size() > 0)
+        if(userDomainRole != null && userDomainRole.size() > 0)
         {
-        	delete(userRole.get(0));
+        	delete(userDomainRole.get(0));
         }
 	}
 	
@@ -257,30 +263,37 @@ public class UserRoleDAO {
 		String actualRole = getRole(username, domainName);
 		if(actualRole != null)
 		{
-			/*TypedQuery<UserRole> query = s.createQuery("update UserRole set role= :newrole where username= :username and domainName= :domainName", UserRole.class);
-			query.setParameter("role", newRole);
-			query.setParameter("username", username);
-			query.setParameter("domainName", domainName);
-			query.executeUpdate();
-			*/
-			UserRole userRole = new UserRole();
-			userRole.setUsername(username);
-			userRole.setRole(newRole);
-			userRole.setDomainName(domainName);
-			update(userRole);
+			Session s = HibernateUtil.getSessionFactory().openSession();
+			User user =  (User) s.get(User.class, username);
+			Domain domain =  (Domain) s.get(Domain.class, domainName);
+			Role role = (Role) s.get(Role.class, newRole);
+			
+			UserDomainRole userDomainRole = new UserDomainRole();
+			userDomainRole.setId(new UserDomainRoleID(user, domain));
+			//userRole.setDomainName(domainName);
+			//userRole.setUsername(username);
+			userDomainRole.setRole(role);
+			update(userDomainRole);
+			s.close();
 		}
 		else
 		{
+			Session s = HibernateUtil.getSessionFactory().openSession();
+			User user =  (User) s.get(User.class, username);
+			Domain domain =  (Domain) s.get(Domain.class, domainName);
 			DomainService domainDAO = new DomainService();
 			String predefniedRoleDomain = domainDAO.getPredefinedRole(domainName);
+			Role role = (Role) s.get(Role.class, predefniedRoleDomain);
 			if(predefniedRoleDomain != null)
 			{
-				UserRole userRole = new UserRole();
-				userRole.setDomainName(domainName);
-				userRole.setRole(predefniedRoleDomain);
-				userRole.setUsername(username);
-				save(userRole);
+				UserDomainRole userDomainRole = new UserDomainRole();
+				userDomainRole.setId(new UserDomainRoleID(user, domain));
+				//userRole.setDomainName(domainName);
+				//userRole.setUsername(username);
+				userDomainRole.setRole(role);
+				save(userDomainRole);
 			}
+			s.close();
 		}
 	}
 	
@@ -294,13 +307,15 @@ public class UserRoleDAO {
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		String role = null;
-		TypedQuery<String> query = s.createQuery("Select role from UserRole where username= :username and domainName= :domainName", String.class);
-		query.setParameter("username", username);
-		query.setParameter("domainName", domainName);
-		List<String> userRole = query.getResultList();  
+		User user =  (User) s.get(User.class, username);
+		Domain domain =  (Domain) s.get(Domain.class, domainName);
+		TypedQuery<Role> query = s.createQuery("Select role from UserRole ur where ur.id.user= :user and ur.id.domain= :domain", Role.class);
+		query.setParameter("user", user);
+		query.setParameter("domain", domain);
+		List<Role> userRole = query.getResultList();  
 		if(userRole != null && userRole.size() > 0)
 		{
-			role = userRole.get(0);
+			role = userRole.get(0).getRoleName();
 		}
 		s.close();
 
@@ -311,7 +326,7 @@ public class UserRoleDAO {
 	*This method saves a UserRole.
 	*@param entity the object UserRole to be saved.
 	*/
-	public void save(UserRole entity)
+	public void save(UserDomainRole entity)
 	{	
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -325,7 +340,7 @@ public class UserRoleDAO {
 	*This method updates a UserRole.
 	*@param entity the object UserRole to be updated.
 	*/
-	public void update(UserRole entity)
+	public void update(UserDomainRole entity)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -339,7 +354,7 @@ public class UserRoleDAO {
 	*This method deletes a UserRole.
 	*@param entity the object UserRole to be deleted.
 	*/
-	public void delete(UserRole userrole)
+	public void delete(UserDomainRole userrole)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		if(userrole!=null)

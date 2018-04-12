@@ -13,12 +13,6 @@ import eu.riscoss.db.postgreSQL.HibernateUtil;
  * This class implements the functions related to the Domain.
 */
 public class DomainService {
-	private static DomainDAO domainDao;
-
-	public DomainService()
-	{
-		domainDao = new DomainDAO();
-	}
 	
 	/**
 	*This method creates a Domain.
@@ -184,7 +178,7 @@ public class DomainService {
 	    List<Domain> domainListDefaultRole = query.getResultList();   
 	    if(domainListDefaultRole != null && domainListDefaultRole.size() > 0)
 	    {	
-	    	predefinedRole =  domainListDefaultRole.get(0).getdefaultRole();
+	    	predefinedRole =  domainListDefaultRole.get(0).getRole().getRoleName();
 	    }
 	    s.close();
 	    return predefinedRole;
@@ -210,18 +204,18 @@ public class DomainService {
 			s.flush();
 			tx.commit();
 			s.close();*/
-			Domain domain = new Domain();
+			/*Domain domain = new Domain();
 			domain.setdefaultRole(value);
 			domain.setDomainName(domainName);
 			domain.setIsPrivate(false);
-			update(domain);
-		/*	Role role = new Role();
+			update(domain);*/
+			Role role = new Role();
 			role.setRoleName(value);
 			Domain domain = new Domain();
 			domain.setRole(role);
 			domain.setDomainName(domainName);
 			domain.setIsPrivate(false);
-			update(domain);*/
+			update(domain);
 		}
 		else
 		{
@@ -235,27 +229,22 @@ public class DomainService {
 			tx.commit();
 			s.close();
 			*/
-			String defaultRole = getPredefinedRole(domainName);
+			/*String defaultRole = getPredefinedRole(domainName);
 			Domain domain = new Domain();
 			domain.setdefaultRole(defaultRole);
 			domain.setDomainName(domainName);
 			domain.setIsPrivate(true);
-			update(domain);
+			update(domain);*/
 			
-			/*String defaultRole = getPredefinedRole(domainName);			
+			String defaultRole = getPredefinedRole(domainName);			
 			Role role = new Role();
 			role.setRoleName(defaultRole);
 			Domain domain = new Domain();
 			domain.setRole(role);
 			domain.setDomainName(domainName);
 			domain.setIsPrivate(true);
-			update(domain);*/
+			update(domain);
 		}
-	}
-	
-	public DomainDAO domainDao()
-	{
-		return domainDao;
 	}
 	
 }

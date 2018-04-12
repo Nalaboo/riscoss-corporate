@@ -9,7 +9,7 @@ import eu.riscoss.db.SiteManager;
 import eu.riscoss.db.postgreSQL.model.DomainService;
 import eu.riscoss.db.postgreSQL.model.RoleDAO;
 import eu.riscoss.db.postgreSQL.model.UserDAO;
-import eu.riscoss.db.postgreSQL.model.UserRoleDAO;
+import eu.riscoss.db.postgreSQL.model.UserDomainRoleDAO;
 
 
 public class PRiscossDBDomain implements RiscossDBDomain{
@@ -132,7 +132,7 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public List<String> listDomains(String username) { 
-		UserRoleDAO userRoleDao = new UserRoleDAO();
+		UserDomainRoleDAO userRoleDao = new UserDomainRoleDAO();
 		return userRoleDao.listDomains(username);
 	}
 
