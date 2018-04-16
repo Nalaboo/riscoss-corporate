@@ -25,7 +25,7 @@ import eu.riscoss.db.postgreSQL.HibernateUtil;
 /**
  * This class implements the functions related to the UserRole.
 */
-public class UserDomainRoleDAO {
+public class UserDomainRoleDAO implements UserDomainRoleDAOInterface{
 	
 	/**
 	*This method is used to list the users that have role as the parameter role
@@ -35,106 +35,13 @@ public class UserDomainRoleDAO {
 	public List<String> listUsers(String role) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		List<String> lUsers = new ArrayList<String>();
-
-        // create Criteria
-       /* CriteriaQuery<UserRole> criteriaQuery = s.getCriteriaBuilder().createQuery(UserRole.class);
-        criteriaQuery.from(UserRole.class);
-        criteriaQuery.select("where ");
-        criteriaQuery.distinct(true);
-        List<UserRole> userRoleList = s.createQuery(criteriaQuery).getResultList();
-        */
-        
-       /* CriteriaBuilder builder = s.getCriteriaBuilder();
-        CriteriaQuery<UserRole> query = builder.createQuery(UserRole.class);
-        Root<UserRole> root = query.from(UserRole.class);
-        query.where(builder.equal(root.get("role"), role));
-        query.distinct(true);
-        Query<UserRole> q= s.createQuery(query);
-        List<UserRole> userRoleList=q.getResultList();
-        */
-        CriteriaBuilder builder = s.getCriteriaBuilder();
-     /*   CriteriaQuery<String> query = builder.createQuery(String.class);
-        Root<UserRole> root = query.from(UserRole.class);
-        query.select(root.get("username")).where(builder.equal(root.get("role"), role));
-        query.distinct(true);
-        TypedQuery<String> q= s.createQuery(query);
-        List<String> userRoleList=q.getResultList();
-        */
-       /* EntityManager em;
-        Metamodel m = em.getMetamodel();
-        EntityType<UserRole> UserRole_ = m.entity(UserRole.class);
-        */
-      /*  CriteriaQuery<String> query = builder.createQuery(String.class);
-        Root<UserRole> root = query.from(UserRole.class);
-        query.where(builder.equal(root.get("role"), role));
-        query.select(root.get("username")).distinct(true);
-        TypedQuery<String> q= s.createQuery(query);
-        List<String> userRoleList=q.getResultList();*/
-        
-      /*  CriteriaQuery<String> criteria = builder.createQuery( String.class );
-        Root<UserRole> personRoot = criteria.from( UserRole.class );
-        criteria.select( personRoot.get( UserRole_.username ) );
-        criteria.where( builder.equal( personRoot.get( UserRole_.role ), role ) );
-        List<String> ages = em.createQuery( criteria ).getResultList();*/
-        
-        //Funciona ok -maven build
         CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
         CriteriaQuery<String> criteriaQuery = criteriaBuilder.createQuery(String.class);
         Root<UserDomainRole> root = criteriaQuery.from(UserDomainRole.class);
         criteriaQuery.select(root.get("id").get("user").<String>get("username")).distinct(true);
         criteriaQuery.where(criteriaBuilder.equal(root.get("role").get("roleName"), role));
-
         Query<String> query = s.createQuery(criteriaQuery);
-
         List<String>userRoleList = (List<String>)query.getResultList();
-        
-	 /*   CriteriaBuilder cb = s.getCriteriaBuilder();
-	    CriteriaQuery<String> cq = cb.createQuery(String.class);
-	    Root<UserRole> root = cq.from(UserRole.class);
-	    cq.select(root.get("username")).distinct(true);
-
-	    //Here is the trick!
-	    Predicate predicate = cb.equal(root.get("role"), role);
-
-	    cq.where(predicate);
-
-	    TypedQuery<String> query = s.createQuery(cq);
-	    List<String> userRoleList= query.getResultList();*/
-	    //
-	    
-	    /*
-	    CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
-	    CriteriaQuery<UserRole> criteriaQuery = criteriaBuilder.createQuery(UserRole.class);
-	    Root<UserRole> root = criteriaQuery.from(UserRole.class);
-
-	    Subquery<UserRole> subQuery = criteriaQuery.subquery(UserRole.class);
-	    Root<UserRole> subRoot = subQuery.from(UserRole.class);
-
-	    subQuery.where(criteriaBuilder.equal(subRoot.get("role"), role)).select(subRoot.get("username")).distinct(true);
-	    criteriaQuery.setProjection(Projections.distinct(Projections.property("id")));
-	    TypedQuery<UserRole> query = s.createQuery(criteriaQuery);
-	    List<UserRole> userRoleList= query.getResultList();
-	    */
-        
-	/*    
-	    CriteriaBuilder builder = em.getCriteriaBuilder();
-	    CriteriaQuery<String> query = builder.createQuery(String.class);
-	    Root<RuleVar> ruleVariableRoot = query.from(RuleVar.class);
-	    query.select(ruleVariableRoot.get(RuleVar_.varType)).distinct(true);*/
-	    
-        /*ProjectionList projection = Projections.projectionList();
-        criteriaQuery.distinct(true);
-        Criteria criteria = session.createCriteria(Message.class);
-        criteria.setProjection(Projections.distinct(Projections.property("msgFrom ")));
-        List<String> msgFromList = criteria.list();
-        
-        Root<RuleVar> ruleVariableRoot = query.from(RuleVar.class);
-        query.select(ruleVariableRoot.get(RuleVar_.varType)).distinct(true);
-		
-		TypedQuery<UserRole> query = s.createQuery("Distinct from UserRole where role= :role", UserRole.class);
-        query.setParameter("role", role);*/
-        
-        //List<UserRole> userRoleList = query.getResultList();     
         
         if(userRoleList != null && userRoleList.size() > 0)
 		for (String username : userRoleList)
@@ -156,10 +63,9 @@ public class UserDomainRoleDAO {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		List<String> lDomainsName = new ArrayList<String>();
 		
-		//Query query = this.em.createQuery("SELECT conc FROM Concept conc WHERE conc.conceptPK.id =:cid order by conc.conceptPK.effectiveTime desc");
 		User user =  (User) s.get(User.class, username);
 
-		TypedQuery<Domain> query = s.createQuery("select ur.id.domain from UserRole ur where ur.id.user= :user", Domain.class);
+		TypedQuery<Domain> query = s.createQuery("select ur.id.domain from UserDomainRole ur where ur.id.user= :user", Domain.class);
         query.setParameter("user", user);
         List<Domain> domainNameList = query.getResultList();     
         
@@ -184,14 +90,6 @@ public class UserDomainRoleDAO {
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		List<String> lDomainroles = new ArrayList<String>();
-		
-	/*	CriteriaBuilder builder = s.getCriteriaBuilder();
-        CriteriaQuery<UserRole> query = builder.createQuery(UserRole.class);
-        Root<UserRole> root = query.from(UserRole.class);
-        query.select(root.get("role")).where(builder.equal(root.get("domainName"), domainName));
-        query.distinct(true);
-        Query<UserRole> q= s.createQuery(query);
-        List<UserRole> userRoleList=q.getResultList();*/
        
 		CriteriaBuilder builder = s.getCriteriaBuilder();
         CriteriaQuery<String> query = builder.createQuery(String.class);
@@ -200,10 +98,6 @@ public class UserDomainRoleDAO {
         query.distinct(true);
         Query<String> q= s.createQuery(query);
         List<String> userRoleList=q.getResultList();
-		
-		/*TypedQuery<UserRole> query = s.createQuery("from UserRole where domainName= :domainName", UserRole.class);
-        query.setParameter("domainName", domainName);
-        List<UserRole> userRoleList = query.getResultList();*/     
         
         if(userRoleList != null && userRoleList.size() > 0)
         {
@@ -223,23 +117,12 @@ public class UserDomainRoleDAO {
 	*@param domainName the name of the Domain
 	*/
 	public void removeUserFromDomain (String username, String domainName)
-	{
-	/*	Session s = HibernateUtil.getSessionFactory().openSession();
-		TypedQuery<UserRole> query = s.createQuery("from UserRole where username= :username AND domainName= :domainName", UserRole.class);
-		query.setParameter("username", username);
-		query.setParameter("domainName", domainName);
-        UserRole userRole = query.getSingleResult();     
-		s.close();
-        if(userRole != null)
-        {
-        	delete(userRole);
-        }*/
-		
+	{		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		User user =  (User) s.get(User.class, username);
 		Domain domain =  (Domain) s.get(Domain.class, domainName);
-		//select ur.id.domain from UserRole ur where ur.id.user= :user
-		TypedQuery<UserDomainRole> query = s.createQuery("from UserRole ur where ur.id.user= :user AND ur.id.domain= :domain", UserDomainRole.class);
+
+		TypedQuery<UserDomainRole> query = s.createQuery("from UserDomainRole ur where ur.id.user= :user AND ur.id.domain= :domain", UserDomainRole.class);
 		query.setParameter("user", user);
 		query.setParameter("domain", domain);
         List<UserDomainRole> userDomainRole = query.getResultList();     
@@ -270,8 +153,6 @@ public class UserDomainRoleDAO {
 			
 			UserDomainRole userDomainRole = new UserDomainRole();
 			userDomainRole.setId(new UserDomainRoleID(user, domain));
-			//userRole.setDomainName(domainName);
-			//userRole.setUsername(username);
 			userDomainRole.setRole(role);
 			update(userDomainRole);
 			s.close();
@@ -281,15 +162,13 @@ public class UserDomainRoleDAO {
 			Session s = HibernateUtil.getSessionFactory().openSession();
 			User user =  (User) s.get(User.class, username);
 			Domain domain =  (Domain) s.get(Domain.class, domainName);
-			DomainService domainDAO = new DomainService();
+			DomainDAO domainDAO = new DomainDAO();
 			String predefniedRoleDomain = domainDAO.getPredefinedRole(domainName);
 			Role role = (Role) s.get(Role.class, predefniedRoleDomain);
 			if(predefniedRoleDomain != null)
 			{
 				UserDomainRole userDomainRole = new UserDomainRole();
 				userDomainRole.setId(new UserDomainRoleID(user, domain));
-				//userRole.setDomainName(domainName);
-				//userRole.setUsername(username);
 				userDomainRole.setRole(role);
 				save(userDomainRole);
 			}
@@ -309,7 +188,7 @@ public class UserDomainRoleDAO {
 		String role = null;
 		User user =  (User) s.get(User.class, username);
 		Domain domain =  (Domain) s.get(Domain.class, domainName);
-		TypedQuery<Role> query = s.createQuery("Select role from UserRole ur where ur.id.user= :user and ur.id.domain= :domain", Role.class);
+		TypedQuery<Role> query = s.createQuery("Select role from UserDomainRole ur where ur.id.user= :user and ur.id.domain= :domain", Role.class);
 		query.setParameter("user", user);
 		query.setParameter("domain", domain);
 		List<Role> userRole = query.getResultList();  
@@ -366,7 +245,5 @@ public class UserDomainRoleDAO {
 		}
 		s.close();
 	}
-	
-	
 	
 }

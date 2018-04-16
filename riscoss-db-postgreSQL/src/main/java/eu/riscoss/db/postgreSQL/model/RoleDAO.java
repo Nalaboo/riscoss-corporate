@@ -12,7 +12,7 @@ import eu.riscoss.db.postgreSQL.HibernateUtil;
 /**
  * This class implements the functions related to the Role.
 */
-public class RoleDAO {
+public class RoleDAO implements RoleDAOInterface{
 	/**
 	*This method saves a Role.
 	*@param entity the object Role to be saved.
@@ -65,15 +65,6 @@ public class RoleDAO {
 	*/
 	public void createRole( String roleName )
 	{	
-		/*Role role = new Role();
-		role.setRoleName(roleName);
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = s.beginTransaction();
-		s.save(role);		
-		s.flush();
-		tx.commit();
-		s.close();	*/
-		
 		Role role = new Role();
 		role.setRoleName(roleName);
 		save(role);		

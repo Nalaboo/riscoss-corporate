@@ -2,7 +2,7 @@ package eu.riscoss.db.postgreSQL;
 import java.util.List;
 
 import eu.riscoss.db.postgreSQL.model.Domain;
-import eu.riscoss.db.postgreSQL.model.DomainService;
+import eu.riscoss.db.postgreSQL.model.DomainDAO;
 import eu.riscoss.db.postgreSQL.model.Role;
 import eu.riscoss.db.postgreSQL.model.RoleDAO;
 import eu.riscoss.db.postgreSQL.model.User;
@@ -47,15 +47,15 @@ public class UserDomainRoleTest{
 		roleDAO.save(role3);
 		roleDAO.save(role4);
 		
-		DomainService domainService = new DomainService();
+		DomainDAO domainDAO = new DomainDAO();
 		Domain domain1 = new Domain("Maria's Domain", role1, true);
 		Domain domain2 = new Domain("Elena's Domain", role1, false);
 		Domain domain3 = new Domain("Joan's Domain", role2, false);
 		Domain domain4 = new Domain("Marc's Domain", role3, true);
-		domainService.save(domain1);
-		domainService.save(domain2);
-		domainService.save(domain3);		
-		domainService.save(domain4);
+		domainDAO.save(domain1);
+		domainDAO.save(domain2);
+		domainDAO.save(domain3);		
+		domainDAO.save(domain4);
 		
 		UserDomainRoleDAO userRoleDao = new UserDomainRoleDAO();
 		UserDomainRole userRole1 = new UserDomainRole( new UserDomainRoleID(user1, domain1), role4);

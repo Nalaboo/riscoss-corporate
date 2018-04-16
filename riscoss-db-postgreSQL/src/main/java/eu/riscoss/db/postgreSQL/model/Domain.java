@@ -1,8 +1,10 @@
 package eu.riscoss.db.postgreSQL.model;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "domain")
@@ -14,32 +16,6 @@ public class Domain {
     private Boolean isPrivate;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Role role;
-	
-
-/*	@OneToMany(mappedBy = "domainName", cascade = CascadeType.ALL)
-	private Set<UserRole> userRoles= new HashSet<UserRole>(0);
-
-	public Set<UserRole> getUserRoles() {
-	    return userRoles;
-	}
-	
-	public void setUserRoles(Set<UserRole> userRoles)
-	{
-		this.userRoles = userRoles;		
-	}
-	*/
-	
-	/*
-	@ManyToOne(cascade = CascadeType.ALL)
-	private UserRole userRole;
-	
-	public UserRole getUserRole() {
-	    return userRole;
-	}
-	
-	public void setUserRole( UserRole userRole) {
-	    this.userRole = userRole;
-	}*/
 	
 	public Role getRole() {
 	    return role;
@@ -55,18 +31,9 @@ public class Domain {
     	
     	this.domainName = domainName;
     	this.role = defaultRole;
-    	//this.defaultRole = defaultRole;
     	this.isPrivate = isPrivate;
     }
     
-  /*  public String getdefaultRole() {
-        return defaultRole;
-    }
-
-    public void setdefaultRole(String defaultRole) {
-        this.defaultRole = defaultRole;
-    }*/
-
     public String getDomainName() {
         return domainName;
     }

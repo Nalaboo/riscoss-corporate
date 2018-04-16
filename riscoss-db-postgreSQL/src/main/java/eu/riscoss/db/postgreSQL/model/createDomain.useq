@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.2.2" icons="true" generate-combined-fragments="true">  
+  <object id="1" language="java" name="eu.riscoss.server.AdminManager" project="riscoss-webapp" 
+    file="/riscoss-webapp/src/main/java/eu/riscoss/server/AdminManager.java" binary="false" label="adminManager" 
+    type="class" autoSize="true">    
+    <position height="-1" width="-1" x="181" y="0"/>  
+  </object>
+</sequence-diagram>

@@ -13,7 +13,7 @@ import eu.riscoss.db.postgreSQL.HibernateUtil;
 /**
  * This class implements the functions related to the User.
 */
-public class UserDAO {
+public class UserDAO implements UserDAOInterface{
 	
 	/**
 	*This method creates a User.
@@ -47,20 +47,6 @@ public class UserDAO {
 	*/
 	public Boolean checkPassword(String username, String passwordToCheck)
 	{
-	/*	Boolean isEqual = false;
-		Session s = HibernateUtil.getSessionFactory().openSession();
-	    TypedQuery<String> query = s.createQuery("select password from User where username= :username", String.class);
-	    query.setParameter("username", username);
-        String password = query.getSingleResult();
-		s.close();
-		
-		String encryptedpasswordToCheck = DigestUtils.md2Hex(passwordToCheck);
-		if(encryptedpasswordToCheck == password)
-		{
-			isEqual = true;
-		}
-		return isEqual;
-		*/
 		Boolean isEqual = false;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 	    TypedQuery<String> query = s.createQuery("select password from User where username= :username", String.class);
@@ -132,19 +118,6 @@ public class UserDAO {
 	*/
 	public Boolean isAdmin (String username)
 	{
-	/*	Boolean isAdmin = false;
-		Session s = HibernateUtil.getSessionFactory().openSession();
-	    TypedQuery<User> query = s.createQuery("from User where username= :username", User.class);
-	    query.setParameter("username", username);
-        User user = query.getSingleResult();
-		if(user.getIsSuperAdmin())
-		{
-			isAdmin = true;
-		}
-		s.close();
-		return isAdmin;
-		*/
-		
 		Boolean isAdmin = false;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 	    TypedQuery<User> query = s.createQuery("from User where username= :username", User.class);
@@ -203,39 +176,4 @@ public class UserDAO {
 		s.close();
 		return lUsersName;
 	}
-	/*
-	public List<String> listUsers(String role) {
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		List<String> lDomainsName = new ArrayList<String>();
-
-		TypedQuery<Domain> query = s.createQuery("from UserEntity where ispublic= :ispublic", Domain.class);
-        query.setParameter("ispublic", true);
-        List<Domain> domainList = query.getResultList();     
-        
-        if(domainList != null && domainList.size() > 0)
-		for (Domain nameDomain : domainList)
-		{
-			lDomainsName.add(nameDomain.getDomainName());
-		}
-		s.close();		
-
-		return lDomainsName;
-	}
-	
-	public boolean isAdmin(String userName) {
-		Session s = HibernateUtil.getSessionFactory().openSession();
-        TypedQuery<Domain> queryExists = s.createQuery("from DomainEntity where domainname= :domainname", Domain.class);
-        queryExists.setParameter("domainname", domain);
-        List<Domain> domainListExists = queryExists.getResultList();     
-        Boolean existsDomain = false;
-        if(domainListExists.size() > 0)
-        {
-        	existsDomain = true;
-        }
-        s.close();
-        return existsDomain;
-	}*/
-
-	
-	
 }

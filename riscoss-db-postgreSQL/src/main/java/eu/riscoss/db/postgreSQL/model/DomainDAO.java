@@ -12,7 +12,7 @@ import eu.riscoss.db.postgreSQL.HibernateUtil;
 /**
  * This class implements the functions related to the Domain.
 */
-public class DomainService {
+public class DomainDAO implements DomainDAOInterface{
 	
 	/**
 	*This method creates a Domain.
@@ -31,10 +31,6 @@ public class DomainService {
 	*/
 	public void save(Domain entity)
 	{
-		/*Session session = HibernateUtil.openCurrentSessionWithTransaction();
-		domainDao.save(entity);
-		HibernateUtil.closeCurrentSessionWithTransaction(session);*/
-		
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		s.save(entity);		
@@ -93,27 +89,6 @@ public class DomainService {
 		}
 		s.close();
 		return lDomainsName;
-		/*
-		
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		s.beginTransaction();
-		List<String> lDomainsName = null;	
-	    TypedQuery<Domain> query = s.createQuery("from Domain", Domain.class);
-	    List<Domain> domainList = query.getResultList();	
-		for (Domain nameDomain : domainList)
-		{
-			lDomainsName.add(nameDomain.getDomainName());
-		}
-				//s.flush();
-				s.close();	
-		
-		return lDomainsName;
-	*/
-		/*
-		HibernateUtil.getSessionFactory().getCurrentSession();
-		List<String> domains = domainDao.findAll();
-		//HibernateUtil.getSessionFactory().close();
-		return domains;*/
 	}
 	
 	/**
@@ -155,13 +130,6 @@ public class DomainService {
         }
         s.close();
         return existsDomain;
-		
-		
-		/*HibernateUtil h = new HibernateUtil();
-		HibernateUtil.getSessionFactory().getCurrentSession();
-		Boolean existsDomain = domainDao.existsDomain(domain);
-	//	HibernateUtil.getSessionFactory().close();
-		return existsDomain;*/
 	}
 	
 	/**
@@ -195,20 +163,6 @@ public class DomainService {
 	{
 		if(value != null && value.toLowerCase() != "private domain")
 		{
-		/*	Session s = HibernateUtil.getSessionFactory().openSession();
-			Transaction tx = s.beginTransaction();
-			TypedQuery<Domain> query = s.createQuery("update Domain set defaultRole =: defaultRole where domainName =: domainName", Domain.class);
-			query.setParameter("defaultRole", value);
-			query.setParameter("domainname", domain);
-			query.executeUpdate();
-			s.flush();
-			tx.commit();
-			s.close();*/
-			/*Domain domain = new Domain();
-			domain.setdefaultRole(value);
-			domain.setDomainName(domainName);
-			domain.setIsPrivate(false);
-			update(domain);*/
 			Role role = new Role();
 			role.setRoleName(value);
 			Domain domain = new Domain();
@@ -218,24 +172,7 @@ public class DomainService {
 			update(domain);
 		}
 		else
-		{
-			/*Session s = HibernateUtil.getSessionFactory().openSession();
-			Transaction tx = s.beginTransaction();
-			TypedQuery<Domain> query = s.createQuery("update Domain set isPrivate =: isPrivate where domainName =: domainName", Domain.class);
-			query.setParameter("isPrivate", true);
-			query.setParameter("domainName", domainName);
-			query.executeUpdate();
-			s.flush();
-			tx.commit();
-			s.close();
-			*/
-			/*String defaultRole = getPredefinedRole(domainName);
-			Domain domain = new Domain();
-			domain.setdefaultRole(defaultRole);
-			domain.setDomainName(domainName);
-			domain.setIsPrivate(true);
-			update(domain);*/
-			
+		{			
 			String defaultRole = getPredefinedRole(domainName);			
 			Role role = new Role();
 			role.setRoleName(defaultRole);

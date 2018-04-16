@@ -4,6 +4,7 @@ import java.util.List;
 
 import eu.riscoss.db.postgreSQL.model.Role;
 import eu.riscoss.db.postgreSQL.model.RoleDAO;
+import eu.riscoss.db.postgreSQL.model.RoleDAOInterface;
 
 /**
  * This class tests the functions implemented in RoleDAO
@@ -12,7 +13,6 @@ public class RoleTest {
 	
 	public static void main(String[] args) {
 		List<String> lRoles;
-		
 		RoleDAO roleDao = new RoleDAO();
 		roleDao.createRole( "admin" );
 		roleDao.createRole( "consumer" );

@@ -15,7 +15,7 @@
     <!-- MAPPINGS -->
     <mapping class="eu.riscoss.db.postgreSQL.model.Domain"/>
 	<mapping class="eu.riscoss.db.postgreSQL.model.User"/>
-	<mapping class="eu.riscoss.db.postgreSQL.model.UserRole"/>
+	<mapping class="eu.riscoss.db.postgreSQL.model.UserDomainRole"/>
 	<mapping class="eu.riscoss.db.postgreSQL.model.Role"/>
   </session-factory>
 </hibernate-configuration>

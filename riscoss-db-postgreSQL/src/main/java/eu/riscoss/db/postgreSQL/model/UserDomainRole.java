@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "userrole")
+@Table(name = "userDomainRole")
 public class UserDomainRole implements Serializable{
 	
 	/**
@@ -15,12 +15,6 @@ public class UserDomainRole implements Serializable{
 	
 	@EmbeddedId
     private UserDomainRoleID id;
-
-	/*@Column(unique = false, name= "username")
-	@Id private String username;
-	
-	@Column(unique = false, name = "domainName")
-	@Id private String domainName;*/
 	
 	@ManyToOne()
 	private Role role;
@@ -41,33 +35,6 @@ public class UserDomainRole implements Serializable{
     	this.role = role;
     }
     
-   /* public UserRole(String userName, String domainName, Role role) 
-    { 
-    	this.username = userName;
-    	this.domainName = domainName;
-    	this.role = role;
-    }*/
-
-/*	public String getUsername()
-    {
-        return username;
-    }
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
-    
-    public String getDomainName()
-    {
-        return domainName;
-    }
-    public void setDomainName(String domainName)
-    {
-        this.domainName = domainName;
-    }
-    */
-    
-    
     public UserDomainRoleID getId() {
         return id;
     }
@@ -75,7 +42,6 @@ public class UserDomainRole implements Serializable{
     public void setId(UserDomainRoleID id) {
         this.id = id;
     }
-    
     
     @Override
     public String toString()

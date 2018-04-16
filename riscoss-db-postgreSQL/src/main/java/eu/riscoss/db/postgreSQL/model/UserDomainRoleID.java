@@ -7,7 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+//Hacer las interficies
+//Volver a sacar pantallazo de la estructura del postgreSQL
 @SuppressWarnings("serial")
 @Embeddable
 public class UserDomainRoleID implements Serializable {

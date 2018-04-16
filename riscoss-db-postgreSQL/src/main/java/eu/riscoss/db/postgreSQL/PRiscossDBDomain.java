@@ -6,7 +6,7 @@ import java.util.List;
 
 import eu.riscoss.db.RiscossDBDomain;
 import eu.riscoss.db.SiteManager;
-import eu.riscoss.db.postgreSQL.model.DomainService;
+import eu.riscoss.db.postgreSQL.model.DomainDAO;
 import eu.riscoss.db.postgreSQL.model.RoleDAO;
 import eu.riscoss.db.postgreSQL.model.UserDAO;
 import eu.riscoss.db.postgreSQL.model.UserDomainRoleDAO;
@@ -62,8 +62,8 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public List<String> listDomains() {
-		DomainService domainService = new DomainService();
-		return domainService.findAll();
+		DomainDAO domainDAO = new DomainDAO();
+		return domainDAO.findAll();
 	}
 
 	public void close() {
@@ -72,12 +72,12 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public void createDomain(String domainName) {
-		DomainService domainService = new DomainService();
-		domainService.createDomain(domainName);
+		DomainDAO domainDAO = new DomainDAO();
+		domainDAO.createDomain(domainName);
   	}
 
 	public void deleteDomain(String domainName) {
-		DomainService domainDao = new DomainService();
+		DomainDAO domainDao = new DomainDAO();
 		domainDao.delete(domainName);;
 	}
 
@@ -112,18 +112,18 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public List<String> listPublicDomains() {
-		DomainService domainService = new DomainService();
-		return domainService.findAllPublic();
+		DomainDAO domainDAO = new DomainDAO();
+		return domainDAO.findAllPublic();
 	}
 
 	public void setPredefinedRole(String domain, String value) {
-		DomainService domainService = new DomainService();
-		domainService.setPredefinedRole(domain, value);		
+		DomainDAO domainDAO = new DomainDAO();
+		domainDAO.setPredefinedRole(domain, value);		
 	}
 
 	public String getPredefinedRole(String domain) {
-		DomainService domainService = new DomainService();
-		return domainService.getPredefinedRole(domain);
+		DomainDAO domainDAO = new DomainDAO();
+		return domainDAO.getPredefinedRole(domain);
 	}
 
 	public void createRole(String roleName) {
@@ -147,8 +147,8 @@ public class PRiscossDBDomain implements RiscossDBDomain{
 	}
 
 	public boolean existsDomain(String domain) {
-		DomainService domainService = new DomainService();
-		return domainService.existsDomain(domain);
+		DomainDAO domainDAO = new DomainDAO();
+		return domainDAO.existsDomain(domain);
 	}
  
 	public void deleteUser(String userName)//tiene que eliminar tambien de la tabla USerRole

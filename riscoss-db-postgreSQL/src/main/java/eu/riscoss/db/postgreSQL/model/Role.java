@@ -41,8 +41,6 @@ public class  Role {
 		this.domains = domains;		
 	}
 	
-	
-	
     public Role() { }
     
     public Role(String roleName) 

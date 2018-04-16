@@ -6,7 +6,7 @@ import java.util.Set;
 import org.hibernate.Session;
 
 import eu.riscoss.db.postgreSQL.model.Domain;
-import eu.riscoss.db.postgreSQL.model.DomainService;
+import eu.riscoss.db.postgreSQL.model.DomainDAO;
 import eu.riscoss.db.postgreSQL.model.Role;
 import eu.riscoss.db.postgreSQL.model.RoleDAO;
 /**
@@ -18,7 +18,7 @@ public class DomainTest {
 		List<String> lAllDomains;
 		List<String> lAllPublicDomains;
 
-		DomainService domainService = new DomainService();
+		DomainDAO domainDAO = new DomainDAO();
 		RoleDAO roleDAO = new RoleDAO();
 		Role role1 = new Role();
 		role1.setRoleName("admin");
@@ -36,10 +36,10 @@ public class DomainTest {
 		Domain domain2 = new Domain("Elena's Domain", "admin", false);
 		Domain domain3 = new Domain("Joan's Domain", "cosumer", false);
 		Domain domain4 = new Domain("Marc's Domain", "modeler", true);*/
-		domainService.save(domain1);
-		domainService.save(domain2);
-		domainService.save(domain3);		
-		domainService.save(domain4);
+		domainDAO.save(domain1);
+		domainDAO.save(domain2);
+		domainDAO.save(domain3);		
+		domainDAO.save(domain4);
 		
 		/*Set<Domain> domains = new HashSet<Domain>();
 		domains.add(domain1);
@@ -56,7 +56,7 @@ public class DomainTest {
 		roleDAO.save(role3);*/
 		
 		
-		lAllDomains = domainService.findAll();
+		lAllDomains = domainDAO.findAll();
 		System.out.println("All domains are :");
 		if(lAllDomains != null && lAllDomains.size() > 0)
 		for (String d : lAllDomains) {
@@ -64,7 +64,7 @@ public class DomainTest {
 		}
 		System.out.println("*** All domains - end ***");
 		
-		lAllPublicDomains = domainService.findAllPublic();
+		lAllPublicDomains = domainDAO.findAllPublic();
 		System.out.println("All public domains are :");
 		if(lAllPublicDomains != null && lAllPublicDomains.size() > 0)
 		for (String d : lAllPublicDomains) {
@@ -73,7 +73,7 @@ public class DomainTest {
 		System.out.println("*** All public domains - end ***");
 		
 		
-		Boolean existsDomain = domainService.existsDomain(domain3.getDomainName());
+		Boolean existsDomain = domainDAO.existsDomain(domain3.getDomainName());
 		if(existsDomain)
 		{
 			System.out.println("*** Domain exists ***" + domain3.getDomainName());
@@ -84,7 +84,7 @@ public class DomainTest {
 		}
 		System.out.println("*** Domain exists/Doesn't Exist - end ***");
 		
-		lAllDomains = domainService.findAll();
+		lAllDomains = domainDAO.findAll();
 		System.out.println("All domains are :");
 		if(lAllDomains != null && lAllDomains.size() > 0)
 		for (String d : lAllDomains) {
@@ -92,14 +92,14 @@ public class DomainTest {
 		}
 		System.out.println("*** All domains - end ***");
 		
-		String predefinedRole = domainService.getPredefinedRole(domain4.getDomainName());
+		String predefinedRole = domainDAO.getPredefinedRole(domain4.getDomainName());
 		System.out.println("Predefined role of domain :" + domain4.getDomainName());
 		System.out.println( predefinedRole + " *** Predefined role of domain : " + domain4.getDomainName() + "- end ***");
 
 		
-		domainService.delete(domain1.getDomainName());
+		domainDAO.delete(domain1.getDomainName());
 		
-		lAllDomains = domainService.findAll();
+		lAllDomains = domainDAO.findAll();
 		System.out.println("All domains are :");
 		if(lAllDomains != null && lAllDomains.size() > 0)
 		for (String d : lAllDomains) {
@@ -107,7 +107,7 @@ public class DomainTest {
 		}
 		System.out.println("*** All domains - end ***");
 		
-		lAllPublicDomains = domainService.findAllPublic();
+		lAllPublicDomains = domainDAO.findAllPublic();
 		System.out.println("All public domains are :");
 		if(lAllPublicDomains != null && lAllPublicDomains.size() > 0)
 		for (String d : lAllPublicDomains) {
